@@ -14,11 +14,6 @@ const mainContent = document.getElementById('main-content');
 const bgMusic = document.getElementById('bg-music');
 const musicCtrl = document.getElementById('music-ctrl');
 
-function toggleMusic() {
-    const icon = document.getElementById("music-icon");
-    if (audio.paused) { audio.play(); icon.innerText = "🎵"; }
-    else { audio.pause(); icon.innerText = "🔇"; }
-
 btnOpen.addEventListener('click', () => {
     cover.style.transition = 'all 1s ease';
     cover.style.transform = 'translateY(-100vh)';
