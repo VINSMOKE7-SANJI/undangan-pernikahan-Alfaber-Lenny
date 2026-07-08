@@ -14,6 +14,11 @@ const mainContent = document.getElementById('main-content');
 const bgMusic = document.getElementById('bg-music');
 const musicCtrl = document.getElementById('music-ctrl');
 
+function toggleMusic() {
+    const icon = document.getElementById("music-icon");
+    if (audio.paused) { audio.play(); icon.innerText = "🎵"; }
+    else { audio.pause(); icon.innerText = "🔇"; }
+
 btnOpen.addEventListener('click', () => {
     cover.style.transition = 'all 1s ease';
     cover.style.transform = 'translateY(-100vh)';
@@ -100,6 +105,11 @@ const countdownInterval = setInterval(() => {
     document.getElementById("minutes").innerText = minutes < 10 ? '0' + minutes : minutes;
     document.getElementById("seconds").innerText = seconds < 10 ? '0' + seconds : seconds;
 }, 1000);
+
+function copyAccount() {
+    navigator.clipboard.writeText("8620684253");
+    alert("Nomor rekening BCA berhasil disalin!");
+}
 
 // 6. Manipulasi Form Ucapan Simpel (Local Storage / Temporary UI)
 const wishForm = document.getElementById('wish-form');
