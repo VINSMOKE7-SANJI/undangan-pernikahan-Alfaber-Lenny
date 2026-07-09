@@ -335,8 +335,8 @@ h1, h2, h3 {
     border-left: 4px solid var(--primary-color);
 }
 
-/* Musik Floating Button */
-.music-btn {
+/* --- MUSIC CONTROL --- */
+#music-control {
     position: fixed;
     bottom: 20px;
     right: 20px;
