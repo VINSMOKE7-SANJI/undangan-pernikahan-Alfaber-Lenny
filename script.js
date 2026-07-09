@@ -14,10 +14,6 @@ const mainContent = document.getElementById('main-content');
 const bgMusic = document.getElementById('bg-music');
 const musicCtrl = document.getElementById('music-ctrl');
 
-btnOpen.addEventListener('click', () => {
-    cover.style.transition = 'all 1s ease';
-    cover.style.transform = 'translateY(-100vh)';
-    setTimeout(() => {
         cover.classList.add('hidden');
         mainContent.classList.remove('hidden');
         musicCtrl.classList.remove('hidden');
