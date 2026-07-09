@@ -10,41 +10,24 @@ if (guestName) {
 // ========================================================
 // 2. Buka Undangan & Play Musik Otomatis (VERSI UTUH)
 // ========================================================
-const btnOpen = document.getElementById('btn-open');
-const cover = document.getElementById('cover');
-const mainContent = document.getElementById('main-content');
-const bgMusic = document.getElementById('bg-music');
-const musicCtrl = document.getElementById('music-ctrl');
+function openInvitation() {
+    const cover = document.getElementById("cover-overlay");
+    const main = document.getElementById("main-invitation");
+    const musicBtn = document.getElementById("music-control");
 
-// Event listener saat tombol "Buka Undangan" diklik
-btnOpen.addEventListener('click', () => {
-    cover.style.transition = 'all 1s ease';
-    cover.style.transform = 'translateY(-100vh)';
-    
+    if (cover) cover.style.opacity = "0";
     setTimeout(() => {
-        cover.classList.add('hidden');
-        mainContent.classList.remove('hidden');
-        musicCtrl.classList.remove('hidden');
-        
-        // Memutar musik setelah ada interaksi klik dari tamu
-        bgMusic.play().catch(error => {
-            console.log("Autoplay musik diblokir oleh browser, silakan klik tombol musik secara manual.", error);
-        });
-    }, 1000);
-});
+        if (cover) cover.style.display = "none";
+        if (main) main.style.display = "block";
+        if (musicBtn) musicBtn.style.display = "flex";
+        if (audio) audio.play().catch(() => console.log("Audio play blocked by browser"));
 
-// Controls Musik Manual Toggle (On / Off)
-let isPlaying = true;
-musicCtrl.addEventListener('click', () => {
-    if (isPlaying) {
-        bgMusic.pause();
-        musicCtrl.innerHTML = '<i class="fas fa-music-slash"></i>';
-    } else {
-        bgMusic.play();
-        musicCtrl.innerHTML = '<i class="fas fa-music"></i>';
-    }
-    isPlaying = !isPlaying;
-});
+    
+function toggleMusic() {
+    const icon = document.getElementById("music-icon");
+    if (audio.paused) { audio.play(); icon.innerText = "🎵"; }
+    else { audio.pause(); icon.innerText = "🔇"; }
+}
 
 // 3. Efek Kelopak Bunga Berjatuhan secara Dinamis
 const leavesContainer = document.getElementById('leaves');
