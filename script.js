@@ -7,23 +7,33 @@ if (guestName) {
     document.getElementById('guest-name').innerText = "Tamu Undangan";
 }
 
-// 2. Buka Undangan & Play Musik Otomatis
+// ========================================================
+// 2. Buka Undangan & Play Musik Otomatis (VERSI UTUH)
+// ========================================================
 const btnOpen = document.getElementById('btn-open');
 const cover = document.getElementById('cover');
 const mainContent = document.getElementById('main-content');
 const bgMusic = document.getElementById('bg-music');
 const musicCtrl = document.getElementById('music-ctrl');
 
+// Event listener saat tombol "Buka Undangan" diklik
+btnOpen.addEventListener('click', () => {
+    cover.style.transition = 'all 1s ease';
+    cover.style.transform = 'translateY(-100vh)';
+    
+    setTimeout(() => {
         cover.classList.add('hidden');
         mainContent.classList.remove('hidden');
         musicCtrl.classList.remove('hidden');
         
-        // Coba play musik (kebijakan browser mengharuskan interaksi user)
-        bgMusic.play().catch(error => console.log("Autoplay musik diblokir oleh browser, silakan klik tombol musik secara manual."));
+        // Memutar musik setelah ada interaksi klik dari tamu
+        bgMusic.play().catch(error => {
+            console.log("Autoplay musik diblokir oleh browser, silakan klik tombol musik secara manual.", error);
+        });
     }, 1000);
 });
 
-// Controls Musik Manual Toggle
+// Controls Musik Manual Toggle (On / Off)
 let isPlaying = true;
 musicCtrl.addEventListener('click', () => {
     if (isPlaying) {
