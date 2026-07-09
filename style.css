@@ -14,7 +14,7 @@
 }
 
 body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Comic Sans MS', 'Montserrat', sans-serif;
     color: var(--text-color);
     background: linear-gradient(rgba(45, 74, 67, 0.4), rgba(45, 74, 67, 0.2)), 
                 url('https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=1920') no-repeat center center fixed;
@@ -62,6 +62,7 @@ body {
 
 h1, h2, h3 {
     margin-bottom: 15px;
+    font-family: 'Comic Sans MS', sans-serif;
 }
 
 .bride-groom {
@@ -75,6 +76,7 @@ h1, h2, h3 {
     font-family: 'Great Vibes', cursive;
     font-size: 3rem;
     color: var(--primary-color);
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
 }
 
 .card {
@@ -100,6 +102,12 @@ h1, h2, h3 {
     padding: 20px;
 }
 
+.cover-content h2 {
+    font-size: 2.5rem;
+    font-family: 'Comic Sans MS', sans-serif;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
 .guest-box {
     background: rgba(255, 255, 255, 0.2);
     padding: 15px 25px;
@@ -107,6 +115,13 @@ h1, h2, h3 {
     margin: 25px auto;
     max-width: 400px;
     border: 1px solid rgba(255,255,255,0.3);
+    font-family: 'Comic Sans MS', sans-serif;
+}
+
+.instruction {
+    font-family: 'Comic Sans MS', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
 }
 
 /* --- Animasi Tombol & Teks --- */
@@ -119,6 +134,7 @@ h1, h2, h3 {
     transition: all 0.3s ease;
     text-decoration: none;
     display: inline-block;
+    font-family: 'Comic Sans MS', sans-serif;
 }
 
 .btn-primary {
@@ -161,6 +177,10 @@ h1, h2, h3 {
     animation: fadeInUp 1s ease;
 }
 
+.content-section p {
+    font-family: 'Comic Sans MS', sans-serif;
+}
+
 /* Profile Mempelaia */
 .couple-container {
     display: flex;
@@ -177,6 +197,7 @@ h1, h2, h3 {
     flex: 1;
     min-width: 250px;
     padding: 20px;
+    font-family: 'Comic Sans MS', sans-serif;
 }
 
 .profile-img {
@@ -208,6 +229,10 @@ h1, h2, h3 {
     width: 100%;
     height: 100%;
     border-radius: 10px;
+}
+
+.video-title {
+    font-family: 'Comic Sans MS', sans-serif;
 }
 
 /* --- Slideshow Foto Efek Fade --- */
@@ -249,6 +274,11 @@ h1, h2, h3 {
     padding: 20px;
     border-radius: 15px;
     margin-bottom: 30px;
+    font-family: 'Comic Sans MS', sans-serif;
+}
+
+.countdown-box h3 {
+    font-family: 'Comic Sans MS', sans-serif;
 }
 
 #countdown {
@@ -263,6 +293,7 @@ h1, h2, h3 {
     padding: 10px 20px;
     border-radius: 8px;
     font-size: 0.8rem;
+    font-family: 'Comic Sans MS', sans-serif;
 }
 
 #countdown span {
@@ -284,6 +315,7 @@ h1, h2, h3 {
     padding: 25px;
     border-radius: 15px;
     text-align: center;
+    font-family: 'Comic Sans MS', sans-serif;
 }
 
 /* Bank / Kado */
@@ -302,6 +334,12 @@ h1, h2, h3 {
     flex: 1;
     min-width: 220px;
     border: 1px solid #ddd;
+    font-family: 'Comic Sans MS', sans-serif;
+}
+
+.bank-card h4 {
+    font-family: 'Comic Sans MS', sans-serif;
+    margin-bottom: 10px;
 }
 
 .qris-img {
@@ -317,7 +355,7 @@ h1, h2, h3 {
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 8px;
-    font-family: inherit;
+    font-family: 'Comic Sans MS', sans-serif;
 }
 
 .wishes-display {
@@ -333,6 +371,7 @@ h1, h2, h3 {
     border-radius: 8px;
     margin-bottom: 10px;
     border-left: 4px solid var(--primary-color);
+    font-family: 'Comic Sans MS', sans-serif;
 }
 
 /* --- MUSIC CONTROL --- */
@@ -350,6 +389,14 @@ h1, h2, h3 {
     cursor: pointer;
     z-index: 1000;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+#music-control:hover {
+    transform: scale(1.1);
 }
 
 /* Keyframes Global Animations */
@@ -362,4 +409,47 @@ h1, h2, h3 {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Text styling untuk readability */
+.quote {
+    font-family: 'Comic Sans MS', sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.intro-text {
+    font-family: 'Comic Sans MS', sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.sub-title {
+    font-family: 'Comic Sans MS', sans-serif;
+    font-style: italic;
+}
+
+.child-of, .parents {
+    font-family: 'Comic Sans MS', sans-serif;
+    font-size: 0.95rem;
+}
+
+.thank-you {
+    font-family: 'Comic Sans MS', sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+.end-quote {
+    font-family: 'Comic Sans MS', sans-serif;
+    font-size: 1.2rem;
+    margin-top: 20px;
+}
+
+.date, .place {
+    font-family: 'Comic Sans MS', sans-serif;
+}
+
+.btn-map {
+    font-family: 'Comic Sans MS', sans-serif;
 }

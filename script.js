@@ -1,3 +1,6 @@
+// Deklarasi audio global
+const audio = document.getElementById('wedding-audio');
+
 // 1. Logika Ambil Nama Tamu dari URL Parameter (?to=NamaTamu)
 const urlParams = new URLSearchParams(window.location.search);
 const guestName = urlParams.get('to');
@@ -8,25 +11,48 @@ if (guestName) {
 }
 
 // ========================================================
-// 2. Buka Undangan & Play Musik Otomatis (VERSI UTUH)
+// 2. Buka Undangan & Play Musik Otomatis (VERSI LENGKAP)
 // ========================================================
 function openInvitation() {
-    const cover = document.getElementById("cover-overlay");
-    const main = document.getElementById("main-invitation");
+    const cover = document.getElementById("cover");
+    const main = document.getElementById("main-content");
     const musicBtn = document.getElementById("music-control");
 
-    if (cover) cover.style.opacity = "0";
-    setTimeout(() => {
-        if (cover) cover.style.display = "none";
-        if (main) main.style.display = "block";
-        if (musicBtn) musicBtn.style.display = "flex";
-        if (audio) audio.play().catch(() => console.log("Audio play blocked by browser"));
-
+    if (cover) {
+        cover.style.transition = 'all 1s ease';
+        cover.style.opacity = "0";
+        cover.style.transform = 'translateY(-100vh)';
+    }
     
+    setTimeout(() => {
+        if (cover) cover.classList.add('hidden');
+        if (main) main.classList.remove('hidden');
+        if (musicBtn) musicBtn.style.display = "flex";
+        
+        // Play musik dengan error handling
+        if (audio) {
+            audio.play().catch(error => {
+                console.log("Audio play blocked by browser. User must click music button manually.");
+            });
+        }
+    }, 1000);
+}
+
+// Toggle Musik On/Off
 function toggleMusic() {
     const icon = document.getElementById("music-icon");
-    if (audio.paused) { audio.play(); icon.innerText = "🎵"; }
-    else { audio.pause(); icon.innerText = "🔇"; }
+    if (!audio) {
+        console.log("Audio element not found");
+        return;
+    }
+    
+    if (audio.paused) { 
+        audio.play();
+        icon.innerText = "🎵"; 
+    } else { 
+        audio.pause();
+        icon.innerText = "🔇"; 
+    }
 }
 
 // 3. Efek Kelopak Bunga Berjatuhan secara Dinamis
@@ -99,18 +125,20 @@ function copyAccount() {
 const wishForm = document.getElementById('wish-form');
 const wishesContainer = document.getElementById('wishes-container');
 
-wishForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = document.getElementById('wish-name').value;
-    const text = document.getElementById('wish-text').value;
+if (wishForm) {
+    wishForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('wish-name').value;
+        const text = document.getElementById('wish-text').value;
 
-    const wishItem = document.createElement('div');
-    wishItem.classList.add('wish-item');
-    wishItem.innerHTML = `<strong>${name}</strong><p>${text}</p>`;
-    
-    // Tampilkan di paling atas daftar ucapan
-    wishesContainer.insertBefore(wishItem, wishesContainer.firstChild);
+        const wishItem = document.createElement('div');
+        wishItem.classList.add('wish-item');
+        wishItem.innerHTML = `<strong>${name}</strong><p>${text}</p>`;
+        
+        // Tampilkan di paling atas daftar ucapan
+        wishesContainer.insertBefore(wishItem, wishesContainer.firstChild);
 
-    // Reset form setelah submit
-    wishForm.reset();
-});
+        // Reset form setelah submit
+        wishForm.reset();
+    });
+}
