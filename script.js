@@ -11,7 +11,7 @@ if (guestName) {
 }
 
 // ========================================================
-// 2. Buka Undangan & Play Musik Otomatis (VERSI LENGKAP)
+// 2. Buka Undangan & Play Musik Otomatis dengan MUTED BYPASS
 // ========================================================
 function openInvitation() {
     const cover = document.getElementById("cover");
@@ -29,16 +29,19 @@ function openInvitation() {
         if (main) main.classList.remove('hidden');
         if (musicBtn) musicBtn.style.display = "flex";
         
-        // Play musik dengan error handling
+        // Unmute dan play musik
         if (audio) {
-            audio.play().catch(error => {
-                console.log("Audio play blocked by browser. User must click music button manually.");
+            audio.muted = false; // Unmute untuk bypass Chrome autoplay policy
+            audio.play().then(() => {
+                console.log("Musik berhasil diputar!");
+            }).catch(error => {
+                console.log("Gagal play musik:", error);
             });
         }
     }, 1000);
 }
 
-// Toggle Musik On/Off
+// Toggle Musik On/Off (Mute/Unmute)
 function toggleMusic() {
     const icon = document.getElementById("music-icon");
     if (!audio) {
@@ -46,11 +49,12 @@ function toggleMusic() {
         return;
     }
     
-    if (audio.paused) { 
+    if (audio.muted) { 
+        audio.muted = false;
         audio.play();
         icon.innerText = "🎵"; 
     } else { 
-        audio.pause();
+        audio.muted = true;
         icon.innerText = "🔇"; 
     }
 }
