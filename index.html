@@ -12,10 +12,8 @@
 
     <div class="leaves-container" id="leaves"></div>
 
-    <audio id="bg-music" loop>
-        <source src="assets/audio/background-music.mp3" type="audio/mp3">
-    </audio>
-    <button id="music-ctrl" class="music-btn hidden"><i class="fas fa-music"></i></button>
+    <audio id="wedding-audio" loop><source src="background-music.mp3" type="audio/mp3"></audio>
+    <div id="music-control" onclick="toggleMusic()" style="display: none;"><span id="music-icon">🎵</span></div>
 
     <section id="cover" class="hero-section">
         <div class="cover-content">
