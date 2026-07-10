@@ -1,6 +1,7 @@
 // Deklarasi audio global
-const audio = document.getElementById('wedding-audio');
+const a=document.getElementById("wedding-audio");
 
+a.play();
 // 1. Logika Ambil Nama Tamu dari URL Parameter (?to=NamaTamu)
 const urlParams = new URLSearchParams(window.location.search);
 const guestName = urlParams.get('to');
@@ -26,8 +27,7 @@ function openInvitation() {
 
         cover.classList.add("hidden");
         main.classList.remove("hidden");
-        musicBtn.style.display = "flex";
-
+        musicBtn.classList.add("show");
         audio.currentTime = 0;
 
         audio.play()
@@ -45,35 +45,25 @@ function openInvitation() {
 // Toggle Musik On/Off (Mute/Unmute)
 function toggleMusic(){
 
-    const icon=document.getElementById("music-icon");
+    console.trace("toggleMusic");
 
     if(audio.paused){
 
         audio.play();
 
-        icon.innerHTML="🎵";
-
     }else{
 
         audio.pause();
 
-        icon.innerHTML="🔇";
-
     }
 
 }
+function toggleMusic(){
 
-audio.addEventListener("canplay",()=>{
+    console.log("TOGGLE DIPANGGIL");
 
-    console.log("MP3 loaded");
-
-});
-
-audio.addEventListener("error",(e)=>{
-
-    console.log(audio.error);
-
-});
+    ...
+}
 
 // 3. Efek Kelopak Bunga Berjatuhan secara Dinamis
 const leavesContainer = document.getElementById('leaves');
