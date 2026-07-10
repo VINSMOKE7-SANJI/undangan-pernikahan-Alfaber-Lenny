@@ -14,50 +14,66 @@ if (guestName) {
 // 2. Buka Undangan & Play Musik Otomatis dengan MUTED BYPASS
 // ========================================================
 function openInvitation() {
+
     const cover = document.getElementById("cover");
     const main = document.getElementById("main-content");
     const musicBtn = document.getElementById("music-control");
 
-    if (cover) {
-        cover.style.transition = 'all 1s ease';
-        cover.style.opacity = "0";
-        cover.style.transform = 'translateY(-100vh)';
-    }
-    
+    cover.style.opacity = "0";
+    cover.style.transform = "translateY(-100vh)";
+
     setTimeout(() => {
-        if (cover) cover.classList.add('hidden');
-        if (main) main.classList.remove('hidden');
-        if (musicBtn) musicBtn.style.display = "flex";
-        
-        // Unmute dan play musik
-        if (audio) {
-            audio.muted = false; // Unmute untuk bypass Chrome autoplay policy
-            audio.play().then(() => {
-                console.log("Musik berhasil diputar!");
-            }).catch(error => {
-                console.log("Gagal play musik:", error);
-            });
-        }
-    }, 1000);
+
+        cover.classList.add("hidden");
+        main.classList.remove("hidden");
+        musicBtn.style.display = "flex";
+
+        audio.currentTime = 0;
+
+        audio.play()
+        .then(() => {
+            console.log("Music playing");
+        })
+        .catch(err => {
+            console.error(err);
+        });
+
+    },1000);
+
 }
 
 // Toggle Musik On/Off (Mute/Unmute)
-function toggleMusic() {
-    const icon = document.getElementById("music-icon");
-    if (!audio) {
-        console.log("Audio element not found");
-        return;
-    }
-    
-    if (audio.muted) { 
-        audio.muted = false;
+function toggleMusic(){
+
+    const icon=document.getElementById("music-icon");
+
+    if(audio.paused){
+
         audio.play();
-        icon.innerText = "🎵"; 
-    } else { 
-        audio.muted = true;
-        icon.innerText = "🔇"; 
+
+        icon.innerHTML="🎵";
+
+    }else{
+
+        audio.pause();
+
+        icon.innerHTML="🔇";
+
     }
+
 }
+
+audio.addEventListener("canplay",()=>{
+
+    console.log("MP3 loaded");
+
+});
+
+audio.addEventListener("error",(e)=>{
+
+    console.log(audio.error);
+
+});
 
 // 3. Efek Kelopak Bunga Berjatuhan secara Dinamis
 const leavesContainer = document.getElementById('leaves');
