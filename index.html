@@ -12,10 +12,11 @@
 
     <div class="leaves-container" id="leaves"></div>
 
-    <!-- Audio dengan muted attribute untuk bypass Chrome autoplay policy -->
-    <audio id="wedding-audio" loop muted>
-        <source src="assets/audio/background-music.mp3" type="audio/mp3">
-    </audio>
+   <audio id="wedding-audio" preload="auto" loop>
+    <source
+        src="assets/audio/background-music.mp3"
+        type="audio/mpeg">
+</audio>
     <div id="music-control" onclick="toggleMusic()" style="display: none;"><span id="music-icon">🎵</span></div>
 
     <section id="cover" class="hero-section">
@@ -45,7 +46,11 @@
                 
                 <div class="video-container">
                     <h3 class="video-title">Our Joyful Moments</h3>
-                    <iframe src="https://youtu.be/gVY04LBXaCc?si=3q3Dev7ojS80A006" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                   <iframe
+src="https://www.youtube.com/embed/gVY04LBXaCc"
+allow="autoplay; encrypted-media"
+allowfullscreen>
+</iframe>
                 </div>
             </div>
         </section>
