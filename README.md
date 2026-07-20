@@ -18,6 +18,36 @@ undangan/
 └── google-apps-script/Code.gs
 ```
 
+## 1b. Update Sesi 2 (perubahan terbaru)
+
+- 🎵 **Musik latar** ditambahkan (`assets/backsound.mp3`), dengan tombol
+  bulat 🔇/🎵 mengambang di pojok kanan atas untuk nyala/mati. Karena
+  kebijakan browser, musik baru benar-benar bersuara setelah tamu klik
+  tombol "Buka Undangan" (dihitung sebagai interaksi pengguna).
+- ❌ Halaman gerbang berlatar gelap (setelah video kereta) **sudah dihapus**.
+  Sekarang gerbang langsung terbuka sebagai overlay tepat di atas halaman
+  sampul yang sudah bercahaya — tidak ada lagi jeda halaman hitam.
+- ✨ Halaman sampul (sebelum klik "Buka Undangan") dibuat lebih menyala:
+  ada kilau emas berdenyut + partikel sparkle supaya kesan pertama lebih
+  memikat.
+- 🌹 **Bingkai bunga** dibuat jauh lebih besar & megah, dengan sulur yang
+  benar-benar terlihat **tumbuh berulang** (garis sulur "menggambar diri"
+  lalu memudar dan tumbuh lagi) plus mawar mekar bertingkat, bukan lagi
+  simbol kecil datar.
+- 🌸 **Hujan kelopak mawar besar** otomatis muncul lebat begitu tombol
+  "Buka Undangan" diklik (saat kalimat pembuka & ayat muncul), lalu
+  melanjutkan hujan ringan terus-menerus di halaman itu.
+  > Catatan: link Pinterest yang kamu kirim tidak bisa dipakai langsung —
+  > itu video milik pihak lain di platform lain, dan aku tidak bisa
+  > mengambil/menyalin kontennya. Efek di atas adalah animasi kelopak
+  > mawar orisinal yang aku buat untuk meniru kesan serupa.
+- 🌄 **Latar pemandangan baru** untuk semua halaman setelah undangan
+  dibuka: padang rumput hijau, danau dengan pantulan cahaya, langit
+  matahari terbenam, dan siluet gedung kota di ujung — menggantikan
+  latar polos sebelumnya. Setiap kartu konten dibuat sedikit transparan
+  (efek kaca buram) supaya pemandangan tetap terlihat menembus di
+  belakangnya.
+
 ## 2. Aset yang WAJIB kamu tambahkan ke folder `assets/`
 
 Nama file harus **persis** seperti ini (huruf kecil semua):
@@ -29,6 +59,7 @@ Nama file harus **persis** seperti ini (huruf kecil semua):
 | `profil-wanita.jpg` | foto profil Lenny |
 | `foto1.jpg` s/d `foto10.jpg` | 10 foto kenangan (slideshow otomatis) |
 | `Our Stories.mp4` | video singkat kedua mempelai |
+| `backsound.mp3` | musik latar (sudah kamu tambahkan ✅) |
 
 > Catatan: nama file asli kamu ("profil-pria.jpg.jpeg") sepertinya double-extension
 > bawaan HP/export. Ganti nama filenya jadi `profil-pria.jpg` biasa (atau `.jpeg`,
@@ -56,6 +87,40 @@ Kalau foto belum ada, halaman tetap tampil rapi dengan placeholder bertuliskan
    ```
    dengan URL yang kamu salin tadi.
 9. Setiap kali kamu edit `Code.gs` lagi, jangan lupa **Manage deployments → Edit → New version** supaya perubahan aktif.
+
+### 🔧 Kalau RSVP terkirim ke WhatsApp tapi TIDAK masuk ke Google Sheet
+
+Ini penyebab paling umum, urutkan dari yang paling sering terjadi:
+
+1. **Belum redeploy setelah edit kode.** Ini penyebab #1 hampir selalu.
+   Setiap kali kamu mengubah isi `Code.gs` (termasuk saat pertama kali
+   menempel kode dariku), kamu HARUS: **Deploy → Manage deployments →
+   klik ikon pensil (Edit) → Version: New version → Deploy** lagi. Kalau
+   cuma disimpan (Ctrl+S) tanpa deploy ulang, URL Web App lama masih
+   menjalankan kode LAMA.
+2. **URL di `js/script.js` salah/kadaluarsa.** Pastikan `APPS_SCRIPT_URL`
+   diakhiri `/exec` (bukan `/dev`), dan itu URL dari deployment TERBARU.
+3. **Nama tab sheet tidak cocok.** Buka `Code.gs`, cek baris
+   `const SHEET_NAME = "Sheet1";` — ganti `"Sheet1"` sesuai nama tab asli
+   di spreadsheet kamu (klik kanan tab di bawah spreadsheet untuk lihat
+   namanya persis, termasuk huruf besar/kecil).
+4. **Cara pasti untuk tahu di mana masalahnya** — buka Apps Script editor:
+   - Jalankan fungsi `testDoPost` sekali lewat tombol ▷ Run di editor
+     (bukan dari website). Kalau baris baru muncul di Sheet, berarti
+     kode & Sheet-nya sudah benar — masalah ada di sisi deployment/URL.
+     Kalau baris TIDAK muncul, lihat pesan error di menu **Executions**
+     (ikon jam di sisi kiri Apps Script editor) untuk tahu persis error-nya.
+   - Buka situs undangan, coba kirim RSVP, lalu tekan F12 (DevTools) →
+     tab **Network** → cari request ke `.../exec` → klik → lihat tab
+     **Response**. Sekarang skrip sudah aku ubah supaya selalu
+     mengembalikan pesan JSON yang jelas, misalnya
+     `{"status":"error","message":"..."}` — pesan itu akan langsung
+     menunjukkan penyebabnya.
+5. Aku juga sudah mengubah `js/script.js` supaya **tidak lagi berpura-pura
+   berhasil** kalau sebenarnya gagal — sebelumnya form selalu menampilkan
+   "berhasil" walau URL Apps Script salah/kosong. Sekarang kalau gagal,
+   status di form akan menampilkan pesan merah dan tombol WhatsApp tetap
+   muncul sebagai jalur cadangan.
 
 Kolom "Konfirmasi WA" sengaja dikosongkan otomatis dan **tidak ditampilkan ke tamu**
 — hanya untuk catatan kamu di spreadsheet, sesuai instruksi awal.
