@@ -3,7 +3,7 @@
 ============================================================ */
 const CONFIG = {
   // URL Web App hasil deploy Google Apps Script (lihat google-apps-script/Code.gs)
-  APPS_SCRIPT_URL: "PASTE_URL_WEB_APP_APPS_SCRIPT_DI_SINI",
+  APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbxKRWeJDz96k9IuSM_4BFyB2EG4mB3j0hmBnwMqGFvA9nVvTHd67jJ_jI9e-Hd_pXEZrw/exec",
 
   WEDDING_DATE: "2026-10-25T09:00:00+07:00",
 
