@@ -1,0 +1,474 @@
+/* ============================================================
+   DESIGN TOKENS
+   Tema: Pernikahan Kerajaan — hijau zamrud tua, emas, gading,
+   dengan aksen mawar blush. Display: Cormorant Garamond,
+   Script: Great Vibes, Body/UI: Poppins.
+============================================================ */
+:root{
+  --emerald-deep:  #14261F;
+  --emerald:       #1F3A2E;
+  --emerald-light: #2E5442;
+  --gold:          #D4AF37;
+  --gold-light:    #F1D98B;
+  --ivory:         #FBF6EC;
+  --blush:         #E8A6A0;
+  --blush-dark:    #C97B72;
+  --sky:           #BFE3F5;
+  --ink:           #2A2A24;
+
+  --sunset-1: #3B2A5C;
+  --sunset-2: #9C4E6B;
+  --sunset-3: #E4784A;
+  --sunset-4: #F4B860;
+
+  --font-display: 'Cormorant Garamond', serif;
+  --font-script:  'Great Vibes', cursive;
+  --font-body:    'Poppins', sans-serif;
+}
+
+*{ box-sizing: border-box; margin:0; padding:0; }
+html{ scroll-behavior: smooth; }
+body{
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--ivory);
+  overflow-x: hidden;
+}
+img{ max-width:100%; display:block; }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
+
+/* ============================================================
+   LOADING SCREEN — gold ring
+============================================================ */
+#loading-screen{
+  position: fixed; inset:0; z-index: 9999;
+  background: var(--emerald-deep);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap: 24px;
+  transition: opacity .8s ease, visibility .8s ease;
+}
+#loading-screen.hide{ opacity:0; visibility:hidden; pointer-events:none; }
+.gold-ring{
+  width: 84px; height:84px; border-radius:50%;
+  border: 4px solid rgba(212,175,55,0.25);
+  border-top-color: var(--gold);
+  animation: spin 1.1s linear infinite;
+}
+@keyframes spin{ to{ transform: rotate(360deg); } }
+.loading-text{
+  color: var(--gold-light); letter-spacing: 3px; font-size: 13px; text-transform: uppercase;
+}
+
+/* ============================================================
+   AMBIENT BACKGROUND — sky, clouds, birds, falling petals
+============================================================ */
+#ambient-bg{ position: fixed; inset:0; z-index:-2; overflow:hidden; }
+
+/* Latar pemandangan (padang rumput + danau + sunset + siluet kota)
+   dipakai di semua halaman setelah tombol "Buka Undangan" diklik */
+#scenery-bg{
+  position: fixed; inset:0; z-index:-1; overflow:hidden;
+}
+#scenery-bg svg{ width:100%; height:100%; display:block; }
+#sun-glow{ animation: sun-pulse 6s ease-in-out infinite; }
+@keyframes sun-pulse{ 0%,100%{ opacity:.8; transform: scale(1);} 50%{ opacity:1; transform: scale(1.06);} }
+.lake-shimmer line{ animation: shimmer 3.5s ease-in-out infinite; }
+.lake-shimmer line:nth-child(2){ animation-delay: .5s; }
+.lake-shimmer line:nth-child(3){ animation-delay: 1s; }
+@keyframes shimmer{ 0%,100%{ opacity:.25; } 50%{ opacity:.7; } }
+.grass-blades path{ animation: sway 3s ease-in-out infinite; transform-origin: bottom center; }
+.grass-blades path:nth-child(odd){ animation-delay: .4s; }
+@keyframes sway{ 0%,100%{ transform: rotate(-2deg);} 50%{ transform: rotate(2deg);} }
+.sky{
+  position:absolute; inset:0;
+  background: linear-gradient(180deg, var(--sky) 0%, #E9F5FB 45%, var(--ivory) 100%);
+}
+.cloud{
+  position:absolute; background: rgba(255,255,255,0.85);
+  border-radius: 50px; filter: blur(1px);
+  animation: drift linear infinite;
+}
+.cloud::before, .cloud::after{
+  content:''; position:absolute; background:inherit; border-radius:50%;
+}
+.c1{ width:140px; height:44px; top:8%; left:-20%; animation-duration: 60s; }
+.c1::before{ width:70px; height:70px; top:-30px; left:15px; }
+.c1::after{ width:50px; height:50px; top:-18px; left:70px; }
+.c2{ width:100px; height:34px; top:16%; left:-30%; animation-duration: 80s; animation-delay: -20s; }
+.c2::before{ width:50px; height:50px; top:-22px; left:10px; }
+.c2::after{ width:40px; height:40px; top:-14px; left:50px; }
+.c3{ width:170px; height:50px; top:5%; left:-40%; animation-duration: 100s; animation-delay: -50s; }
+.c3::before{ width:80px; height:80px; top:-34px; left:20px; }
+.c3::after{ width:60px; height:60px; top:-20px; left:90px; }
+@keyframes drift{ to{ transform: translateX(160vw); } }
+
+.bird{ position:absolute; width:36px; opacity:.75; animation: fly linear infinite, flap .5s ease-in-out infinite alternate; }
+.b1{ top: 12%; animation-duration: 18s, .5s; }
+.b2{ top: 20%; animation-duration: 24s, .45s; animation-delay: -6s, 0s; }
+.b3{ top: 9%;  animation-duration: 30s, .55s; animation-delay: -14s, 0s; }
+@keyframes fly{ from{ left:-10%; } to{ left:110%; } }
+@keyframes flap{ from{ transform: scaleY(1);} to{ transform: scaleY(0.5);} }
+
+#petals-container{ position:absolute; inset:0; pointer-events:none; }
+.petal{
+  position:absolute; top:-5%; font-size: 18px; color: var(--blush);
+  animation: fall linear infinite;
+  user-select:none;
+}
+.petal::before{ content:'❀'; }
+@keyframes fall{
+  0%{ transform: translateY(0) translateX(0) rotate(0deg); opacity: .9; }
+  100%{ transform: translateY(110vh) translateX(var(--drift, 40px)) rotate(360deg); opacity: .2; }
+}
+
+/* ============================================================
+   FULLSCREEN SECTIONS
+============================================================ */
+.fullscreen{
+  position: relative; width:100%; min-height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  text-align:center;
+}
+.page{ padding: 90px 24px; }
+
+/* ---- Splash video (kereta pegasus) ---- */
+#splash-video{ background: var(--emerald-deep); overflow:hidden; }
+#carriage-video{ width:100%; height:100%; object-fit:cover; }
+.video-fallback{ display:none; }
+#splash-video.no-video .video-fallback{
+  display:flex; align-items:flex-end; justify-content:center;
+  position:absolute; inset:0; background: linear-gradient(180deg,#0e1b16,#1F3A2E 70%, #2E5442);
+}
+.castle{
+  position:absolute; bottom: 22%; left:50%; transform:translateX(-50%);
+  width: 220px; height: 140px;
+  background: var(--emerald-light);
+  clip-path: polygon(0% 100%, 0% 40%, 15% 40%, 15% 20%, 25% 20%, 25% 40%, 40% 40%, 40% 10%, 50% 0%, 60% 10%, 60% 40%, 75% 40%, 75% 20%, 85% 20%, 85% 40%, 100% 40%, 100% 100%);
+  opacity:.9;
+}
+.road{ position:absolute; bottom:0; width:100%; height: 22%; background: var(--emerald-deep); }
+.carriage-anim{
+  position: relative; bottom: 6%; font-size: 42px;
+  animation: carriage-move 3.2s ease-in-out forwards;
+}
+@keyframes carriage-move{
+  from{ transform: translateX(-60vw) scale(.8); }
+  to{ transform: translateX(0) scale(1.1); }
+}
+
+/* ---- Gate opening: overlay DI ATAS cover, bukan halaman terpisah ----
+   Tidak ada layar hitam kosong — daun gerbang bertekstur emas/zamrud
+   langsung terbuka menyingkap cover yang sudah bersinar di baliknya. */
+#gate-overlay{
+  position: fixed; inset:0; z-index: 40; overflow:hidden;
+}
+.gate-leaf{
+  position:absolute; top:0; width:50%; height:100%;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(241,217,139,0.25), transparent 60%),
+    linear-gradient(135deg, var(--emerald-light) 0%, var(--emerald) 55%, var(--emerald-deep) 100%);
+  border: 3px solid var(--gold);
+  box-shadow: inset 0 0 60px rgba(212,175,55,0.25);
+}
+.gate-leaf::before{
+  content:'❧';
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  font-size: 64px; color: rgba(241,217,139,0.55);
+}
+.gate-left{ left:0; transform-origin:left center; }
+.gate-right{ right:0; transform-origin:right center; }
+.gate-left::before{ left: auto; right: 30px; transform: translateY(-50%); }
+.gate-right::before{ left: 30px; transform: translateY(-50%); }
+
+#gate-overlay.opening .gate-left{ animation: open-left 1.6s ease forwards; }
+#gate-overlay.opening .gate-right{ animation: open-right 1.6s ease forwards; }
+@keyframes open-left{ to{ transform: translateX(-100%); } }
+@keyframes open-right{ to{ transform: translateX(100%); } }
+#gate-overlay.hidden-overlay{ display:none; }
+
+/* ---- Flower frame (signature element): sulur mawar besar yang
+   terus-menerus terlihat "tumbuh" mengelilingi setiap bingkai ---- */
+.flower-frame{ position:absolute; inset: 0; pointer-events:none; z-index:5; }
+.flower-frame--grand .corner{ width: 220px; height:220px; }
+.corner{ position:absolute; width: 90px; height:90px; }
+.corner svg{ width:100%; height:100%; overflow:visible; }
+.corner.tl{ top:0; left:0; }
+.corner.tr{ top:0; right:0; transform: scaleX(-1); }
+.corner.bl{ bottom:0; left:0; transform: scaleY(-1); }
+.corner.br{ bottom:0; right:0; transform: scale(-1,-1); }
+
+.corner .vine{
+  stroke: #4F8354;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 420;
+  filter: drop-shadow(0 0 3px rgba(79,131,84,0.5));
+  animation: vine-grow 5s cubic-bezier(.4,0,.2,1) infinite;
+}
+@keyframes vine-grow{
+  0%{ stroke-dashoffset: 420; opacity: 0; }
+  8%{ opacity: 1; }
+  55%{ stroke-dashoffset: 0; opacity: 1; }
+  85%{ stroke-dashoffset: 0; opacity: 1; }
+  100%{ stroke-dashoffset: -420; opacity: 0; }
+}
+
+.corner .rose-anim{ transform-box: fill-box; transform-origin: center; }
+.corner .rose-anim-1{ animation: rose-bloom-pop 5s ease-in-out infinite; animation-delay: .3s; }
+.corner .rose-anim-2{ animation: rose-bloom-pop 5s ease-in-out infinite; animation-delay: 1.4s; }
+.corner .rose-anim-3{ animation: rose-bloom-pop 5s ease-in-out infinite; animation-delay: 2.5s; }
+@keyframes rose-bloom-pop{
+  0%, 100%{ transform: scale(0); opacity: 0; }
+  15%, 70%{ transform: scale(1); opacity: 1; }
+  85%{ transform: scale(1.12); opacity: 1; }
+}
+
+/* ---- Cover section: kesan pertama lebih megah & bercahaya ---- */
+#cover{
+  background:
+    radial-gradient(ellipse at center, rgba(255,255,255,0.9) 0%, var(--ivory) 55%, #ecdfba 100%);
+  overflow:hidden;
+}
+.cover-glow{
+  position:absolute; inset:0; pointer-events:none; z-index:1;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(212,175,55,0.35), transparent 55%),
+    radial-gradient(circle at 15% 85%, rgba(212,175,55,0.18), transparent 45%),
+    radial-gradient(circle at 85% 85%, rgba(212,175,55,0.18), transparent 45%);
+  animation: cover-glow-pulse 5s ease-in-out infinite;
+}
+@keyframes cover-glow-pulse{ 0%,100%{ opacity:.75;} 50%{ opacity:1;} }
+
+#sparkle-container{ position:absolute; inset:0; pointer-events:none; }
+.sparkle{
+  position:absolute; width:4px; height:4px; border-radius:50%;
+  background: var(--gold-light);
+  box-shadow: 0 0 8px 2px rgba(241,217,139,0.9);
+  animation: sparkle-twinkle ease-in-out infinite;
+}
+@keyframes sparkle-twinkle{
+  0%,100%{ opacity:0; transform: scale(0.4); }
+  50%{ opacity:1; transform: scale(1.2); }
+}
+
+/* ---- Musik latar: tombol mengambang ---- */
+#music-toggle{
+  position: fixed; top: 16px; right: 16px; z-index: 300;
+  width: 46px; height: 46px; border-radius: 50%;
+  background: rgba(31,58,46,0.85); color: var(--gold-light);
+  border: 1px solid rgba(212,175,55,0.5); font-size: 18px;
+  cursor: pointer; box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+}
+#music-toggle:focus-visible{ outline: 2px solid var(--gold); outline-offset:2px; }
+
+/* ---- Hujan kelopak mawar besar (dipicu saat kata pembuka muncul) ---- */
+#rose-shower-container{
+  position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:1;
+}
+.rose-petal-big{
+  position:absolute; top:-8%;
+  width: 22px; height: 22px;
+  background: radial-gradient(circle at 35% 30%, #F3C9C3, #C0524A 75%);
+  border-radius: 0% 60% 0% 60%;
+  opacity: 0.9;
+  animation: rose-fall linear forwards;
+}
+@keyframes rose-fall{
+  0%{ transform: translateY(0) translateX(0) rotate(0deg); opacity:0; }
+  8%{ opacity:.95; }
+  100%{ transform: translateY(115vh) translateX(var(--rose-drift, 60px)) rotate(400deg); opacity:.15; }
+}
+.cover-content{ max-width: 640px; position:relative; z-index:3; }
+.eyebrow{ letter-spacing: 5px; text-transform:uppercase; font-size:12px; color: var(--blush-dark); margin-bottom: 8px; }
+.names-script{
+  font-family: var(--font-script); font-weight:400;
+  font-size: clamp(48px, 9vw, 96px); color: var(--emerald);
+  line-height: 1.1; margin-bottom: 20px;
+}
+.names-script .amp{ color: var(--gold); }
+.names-script.small{ font-size: 40px; }
+.greeting-text{
+  font-family: var(--font-display); font-size: 19px; line-height:1.7;
+  color: var(--ink); max-width: 520px; margin: 0 auto 28px;
+}
+.guest-label{ font-size:13px; color:#6b6b60; margin-bottom:4px; }
+.guest-name{
+  font-family: var(--font-display); font-style:italic; font-weight:600;
+  font-size: 26px; color: var(--emerald); margin-bottom: 32px;
+}
+
+.btn-gold{
+  font-family: var(--font-body); font-weight:500; letter-spacing:1px;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  color: var(--emerald-deep); border:none; padding: 14px 38px;
+  border-radius: 999px; cursor:pointer; font-size:14px;
+  box-shadow: 0 8px 24px rgba(212,175,55,0.35);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.btn-gold:hover{ transform: translateY(-3px); box-shadow: 0 12px 30px rgba(212,175,55,0.45); }
+.btn-gold:focus-visible{ outline: 3px solid var(--emerald); outline-offset:3px; }
+
+/* ============================================================
+   MAIN INVITATION PAGES
+============================================================ */
+#main-invitation{ position:relative; }
+.section-title{
+  font-family: var(--font-display); font-weight:600; font-style:italic;
+  font-size: clamp(28px, 4vw, 40px); color: var(--emerald); text-align:center; margin-bottom:8px;
+}
+.section-subtitle{ text-align:center; color:#6b6b60; font-size:14px; margin-bottom:40px; letter-spacing:1px; }
+
+/* Verse */
+.verse-page{ background: rgba(20,38,31,0.55); backdrop-filter: blur(3px); color: var(--ivory); }
+.verse{
+  max-width: 680px; font-family: var(--font-display); font-style:italic;
+  font-size: clamp(20px, 3vw, 30px); line-height:1.7; position:relative; z-index:3;
+}
+.verse cite{ display:block; margin-top:20px; font-size:16px; color: var(--gold); font-style:normal; letter-spacing:1px; }
+
+/* Couple profile */
+.profile-page{ background: rgba(251,246,236,0.72); backdrop-filter: blur(3px); }
+.couple-grid{
+  display:flex; align-items:center; justify-content:center; gap: 40px; flex-wrap:wrap; max-width: 900px; margin:0 auto;
+}
+.profile-card{ max-width: 260px; text-align:center; }
+.profile-photo-frame{
+  width: 200px; height: 240px; margin: 0 auto 18px; border-radius: 8px 8px 100px 100px;
+  overflow:hidden; border: 4px solid var(--gold); box-shadow: 0 12px 30px rgba(31,58,46,0.18);
+}
+.profile-photo-frame img{ width:100%; height:100%; object-fit:cover; }
+.reveal-left{ animation: slide-in-left 1s ease both; animation-timeline: view(); }
+.reveal-right{ animation: slide-in-right 1s ease both; animation-timeline: view(); }
+@keyframes slide-in-left{ from{ opacity:0; transform: translateX(-40px);} to{opacity:1; transform:none;} }
+@keyframes slide-in-right{ from{ opacity:0; transform: translateX(40px);} to{opacity:1; transform:none;} }
+.profile-name{ font-family: var(--font-display); font-size:22px; color: var(--emerald); margin-bottom:6px; }
+.profile-detail{ font-size:13px; color:#6b6b60; margin-bottom:8px; }
+.profile-parents{ font-size:13px; color:#6b6b60; line-height:1.6; }
+.couple-connector{
+  font-family: var(--font-script); font-size:60px; color: var(--gold);
+}
+
+/* Gallery */
+.gallery-page{ background: rgba(242,234,216,0.7); backdrop-filter: blur(3px); }
+.gallery-slider{
+  position: relative; width: min(600px, 90vw); height: min(420px, 60vw);
+  margin: 0 auto; border-radius: 12px; overflow:hidden;
+  box-shadow: 0 20px 50px rgba(31,58,46,0.2); border: 6px solid #fff;
+}
+.gallery-slide{
+  position:absolute; inset:0; opacity:0; transition: opacity 1.2s ease;
+}
+.gallery-slide.active{ opacity:1; }
+.gallery-slide img{ width:100%; height:100%; object-fit:cover; }
+.gallery-dots{ display:flex; justify-content:center; gap:8px; margin-top:18px; }
+.gallery-dots span{ width:8px; height:8px; border-radius:50%; background: #d8cba8; transition: background .3s; }
+.gallery-dots span.active{ background: var(--gold); }
+
+/* Video */
+.video-page{ background: rgba(251,246,236,0.72); backdrop-filter: blur(3px); }
+.video-frame{
+  max-width: 720px; margin:0 auto; border-radius:12px; overflow:hidden;
+  box-shadow: 0 20px 50px rgba(31,58,46,0.2); border: 6px solid #fff;
+}
+.video-frame video{ width:100%; display:block; background:#000; }
+
+/* Schedule */
+.schedule-page{ background: rgba(31,58,46,0.55); backdrop-filter: blur(3px); color: var(--ivory); }
+.schedule-page .section-title{ color: var(--ivory); }
+.schedule-date{ text-align:center; font-family: var(--font-display); font-size:20px; color: var(--gold-light); margin-bottom: 30px; }
+.countdown{ display:flex; justify-content:center; gap:16px; margin-bottom: 50px; flex-wrap:wrap; }
+.cd-box{
+  background: rgba(255,255,255,0.08); border:1px solid rgba(212,175,55,0.4);
+  border-radius: 10px; padding: 16px 20px; min-width:80px;
+}
+.cd-box span{ display:block; font-family: var(--font-display); font-size:32px; color:var(--gold-light); }
+.cd-box label{ font-size:11px; letter-spacing:1px; text-transform:uppercase; color:#cfd9d3; }
+
+.location-cards{ display:flex; gap: 30px; justify-content:center; flex-wrap:wrap; max-width:1000px; margin:0 auto; }
+.location-card{
+  background: rgba(255,255,255,0.06); border:1px solid rgba(212,175,55,0.3);
+  border-radius:14px; padding:24px; max-width: 420px; text-align:left;
+}
+.location-card h3{ font-family: var(--font-display); font-size:22px; color: var(--gold-light); margin-bottom:8px; }
+.location-card p{ font-size:14px; line-height:1.6; margin-bottom:14px; color:#e6ece8; }
+.map-embed{ border-radius:10px; overflow:hidden; margin-bottom:14px; }
+.map-embed iframe{ width:100%; height:220px; border:0; display:block; }
+.btn-outline{
+  display:inline-block; border:1px solid var(--gold); color: var(--gold-light);
+  padding:8px 18px; border-radius:999px; text-decoration:none; font-size:13px;
+}
+
+/* Gift */
+.gift-page{ background: rgba(251,246,236,0.72); backdrop-filter: blur(3px); }
+.gift-intro{ text-align:center; max-width:560px; margin: 0 auto 36px; color:#5a5a50; font-size:15px; }
+.bank-cards{ display:flex; gap:24px; justify-content:center; flex-wrap:wrap; }
+.bank-card{
+  background:#fff; border:1px solid #e8dfc4; border-radius:14px; padding:24px 30px;
+  text-align:center; min-width:230px; box-shadow: 0 12px 30px rgba(31,58,46,0.08);
+}
+.bank-logo{ font-family: var(--font-display); font-weight:700; font-size:22px; letter-spacing:2px; margin-bottom:12px; }
+.bank-logo.bri{ color:#00529c; }
+.bank-logo.bca{ color:#0057a4; }
+.bank-number{ font-size:19px; font-weight:600; letter-spacing:1px; margin-bottom:4px; }
+.bank-name{ font-size:13px; color:#6b6b60; margin-bottom:14px; }
+.btn-copy{
+  background: var(--emerald); color:#fff; border:none; padding:8px 16px; border-radius:999px;
+  font-size:12px; cursor:pointer;
+}
+.btn-copy.copied{ background: var(--gold); color: var(--emerald-deep); }
+
+/* RSVP */
+.rsvp-page{ background: rgba(242,234,216,0.72); backdrop-filter: blur(3px); }
+#rsvp-form{ max-width:480px; margin:0 auto; display:flex; flex-direction:column; gap:16px; }
+#rsvp-form label{ display:flex; flex-direction:column; gap:6px; font-size:13px; color:#5a5a50; text-align:left; }
+#rsvp-form input, #rsvp-form select, #rsvp-form textarea{
+  font-family: var(--font-body); padding:10px 14px; border-radius:8px; border:1px solid #d8cba8; font-size:14px;
+}
+#rsvp-form input:focus, #rsvp-form select:focus, #rsvp-form textarea:focus{ outline: 2px solid var(--gold); }
+.rsvp-status{ font-size:13px; min-height:18px; text-align:center; }
+.rsvp-wa-confirm{ max-width:480px; margin: 24px auto 0; text-align:center; }
+.wa-buttons{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:10px; }
+.btn-wa{
+  background:#25D366; color:#fff; text-decoration:none; padding:10px 20px; border-radius:999px; font-size:13px;
+}
+
+/* Closing */
+.closing-page{ background: rgba(20,38,31,0.6); backdrop-filter: blur(3px); color: var(--ivory); }
+.closing-page .section-title{ color: var(--gold-light); }
+.closing-text{ max-width:600px; margin: 0 auto 16px; font-family: var(--font-display); font-size:17px; line-height:1.8; text-align:center; }
+.closing-thanks{ max-width:600px; margin: 24px auto; font-size:14px; text-align:center; color:#dfe8e3; }
+.closing-signature{ text-align:center; margin-top:30px; font-size:15px; }
+
+/* Ad footer */
+.ad-footer{ background: var(--gold); text-align:center; padding: 18px; }
+.btn-ad{ color: var(--emerald-deep); text-decoration:none; font-size:14px; font-weight:500; }
+
+/* Fireworks canvas */
+#fireworks-canvas{
+  position:fixed; inset:0; z-index: 50; pointer-events:none; opacity:0;
+}
+#fireworks-canvas.show{ opacity:1; }
+
+/* Floating RSVP toast */
+#rsvp-toast-container{
+  position: fixed; bottom: 18px; left:50%; transform: translateX(-50%);
+  z-index: 200; display:flex; flex-direction:column; gap:8px; align-items:center;
+  pointer-events:none; max-width: 92vw;
+}
+.rsvp-toast{
+  background: rgba(31,58,46,0.92); color:#fff; padding: 10px 20px; border-radius: 999px;
+  font-size: 13px; box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  animation: toast-in .4s ease, toast-out .5s ease 4.5s forwards;
+  white-space: nowrap; text-overflow:ellipsis; overflow:hidden; max-width: 90vw;
+}
+@keyframes toast-in{ from{ opacity:0; transform: translateY(20px);} to{ opacity:1; transform:none;} }
+@keyframes toast-out{ to{ opacity:0; transform: translateY(-10px); } }
+
+@media (max-width: 640px){
+  .couple-grid{ gap: 16px; }
+  .couple-connector{ display:none; }
+  .location-cards{ gap: 16px; }
+}
