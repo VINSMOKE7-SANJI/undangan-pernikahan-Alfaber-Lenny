@@ -4,7 +4,7 @@
  * ============================================================
  *  Cara pakai:
  *  1. Buka Google Sheet kamu:
- *     https://docs.google.com/spreadsheets/d/1outQEbGrSohNRHCHH5fk6P0zIZzWTjPj-IS-3y4t_Hg/edit
+ *     https://docs.google.com/spreadsheets/d/173iTy2zuaf3H383TFzRfhvFqJLweq8ikiKLtSIV4A0k/edit?usp=sharing
  *  2. Pastikan baris pertama (header) berisi persis kolom berikut,
  *     di sheet pertama (ganti nama sheet di SHEET_NAME jika beda):
  *     Waktu | Nama | Kehadiran | Jumlah | Konfirmasi WA | Ucapan
