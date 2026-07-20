@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Undangan Pernikahan Alfaber & Lenny</title>
+<meta name="description" content="Undangan pernikahan digital Alfaber Simangunsong & Lenny Nova Kurniasari">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============ SVG DEFS: bunga mawar & sulur (dipakai ulang di semua bingkai) ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="rose-bloom">
+      <g class="rose-petals">
+        <ellipse cx="0" cy="-9" rx="7" ry="10" fill="url(#roseGrad)" transform="rotate(0)"/>
+        <ellipse cx="0" cy="-9" rx="7" ry="10" fill="url(#roseGrad)" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-9" rx="7" ry="10" fill="url(#roseGrad)" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-9" rx="7" ry="10" fill="url(#roseGrad)" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-9" rx="7" ry="10" fill="url(#roseGrad)" transform="rotate(288)"/>
+      </g>
+      <circle cx="0" cy="0" r="4.5" fill="#F1D98B"/>
+      <circle cx="0" cy="0" r="2" fill="#D4AF37"/>
+      <ellipse cx="-9" cy="12" rx="6" ry="3.5" fill="#4a7a5c" transform="rotate(-30 -9 12)"/>
+      <ellipse cx="9" cy="12" rx="6" ry="3.5" fill="#4a7a5c" transform="rotate(30 9 12)"/>
+    </g>
+    <linearGradient id="roseGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F0BDB6"/>
+      <stop offset="100%" stop-color="#C0524A"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<!-- ============ LOADING SCREEN ============ -->
+<div id="loading-screen">
+  <div class="gold-ring"></div>
+  <p class="loading-text">Menyiapkan Undangan...</p>
+</div>
+
+<!-- ============ MUSIK LATAR ============ -->
+<audio id="bg-music" loop preload="auto">
+  <source src="assets/backsound.mp3" type="audio/mpeg">
+</audio>
+<button id="music-toggle" aria-label="Aktifkan/matikan musik" title="Musik">🔇</button>
+
+<!-- ============ AMBIENT BACKGROUND (persists whole site) ============ -->
+<div id="ambient-bg" aria-hidden="true">
+  <div class="sky"></div>
+  <div class="clouds">
+    <span class="cloud c1"></span>
+    <span class="cloud c2"></span>
+    <span class="cloud c3"></span>
+  </div>
+  <svg class="bird b1" viewBox="0 0 60 30"><path d="M0 15 Q15 0 30 15 Q45 0 60 15" fill="none" stroke="#4b4b4b" stroke-width="2.5" stroke-linecap="round"/></svg>
+  <svg class="bird b2" viewBox="0 0 60 30"><path d="M0 15 Q15 0 30 15 Q45 0 60 15" fill="none" stroke="#4b4b4b" stroke-width="2.5" stroke-linecap="round"/></svg>
+  <svg class="bird b3" viewBox="0 0 60 30"><path d="M0 15 Q15 0 30 15 Q45 0 60 15" fill="none" stroke="#4b4b4b" stroke-width="2.5" stroke-linecap="round"/></svg>
+  <div id="petals-container"></div>
+  <div id="sparkle-container"></div>
+</div>
+
+<!-- ============ SPLASH: video kereta pegasus (autoplay) ============ -->
+<section id="splash-video" class="fullscreen">
+  <video id="carriage-video" autoplay muted playsinline preload="auto">
+    <source src="assets/kereta-pegasus.mp4" type="video/mp4">
+  </video>
+  <div class="video-fallback">
+    <div class="carriage-illustration">
+      <div class="castle"></div>
+      <div class="road"></div>
+      <div class="carriage-anim">🐎🐎 🛺</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COVER / GREETING (gerbang dibuka sebagai overlay, tanpa halaman hitam) ============ -->
+<section id="cover" class="fullscreen page">
+  <div class="cover-glow" aria-hidden="true"></div>
+  <div class="flower-frame flower-frame--grand">
+    <div class="corner tl"><svg viewBox="0 0 200 200"><path class="vine" d="M8,192 C8,120 8,55 65,25 C100,6 150,6 192,8" fill="none"/><g transform="translate(65,25) scale(1.15)"><use href="#rose-bloom" class="rose-anim rose-anim-1"/></g><g transform="translate(130,10) scale(0.9)"><use href="#rose-bloom" class="rose-anim rose-anim-2"/></g><g transform="translate(20,150) scale(1.3)"><use href="#rose-bloom" class="rose-anim rose-anim-3"/></g></svg></div>
+    <div class="corner tr"><svg viewBox="0 0 200 200"><path class="vine" d="M8,192 C8,120 8,55 65,25 C100,6 150,6 192,8" fill="none"/><g transform="translate(65,25) scale(1.15)"><use href="#rose-bloom" class="rose-anim rose-anim-1"/></g><g transform="translate(130,10) scale(0.9)"><use href="#rose-bloom" class="rose-anim rose-anim-2"/></g><g transform="translate(20,150) scale(1.3)"><use href="#rose-bloom" class="rose-anim rose-anim-3"/></g></svg></div>
+    <div class="corner bl"><svg viewBox="0 0 200 200"><path class="vine" d="M8,192 C8,120 8,55 65,25 C100,6 150,6 192,8" fill="none"/><g transform="translate(65,25) scale(1.15)"><use href="#rose-bloom" class="rose-anim rose-anim-1"/></g><g transform="translate(130,10) scale(0.9)"><use href="#rose-bloom" class="rose-anim rose-anim-2"/></g><g transform="translate(20,150) scale(1.3)"><use href="#rose-bloom" class="rose-anim rose-anim-3"/></g></svg></div>
+    <div class="corner br"><svg viewBox="0 0 200 200"><path class="vine" d="M8,192 C8,120 8,55 65,25 C100,6 150,6 192,8" fill="none"/><g transform="translate(65,25) scale(1.15)"><use href="#rose-bloom" class="rose-anim rose-anim-1"/></g><g transform="translate(130,10) scale(0.9)"><use href="#rose-bloom" class="rose-anim rose-anim-2"/></g><g transform="translate(20,150) scale(1.3)"><use href="#rose-bloom" class="rose-anim rose-anim-3"/></g></svg></div>
+  </div>
+
+  <div id="gate-overlay">
+    <div class="gate-leaf gate-left"></div>
+    <div class="gate-leaf gate-right"></div>
+  </div>
+
+  <div class="cover-content">
+    <p class="eyebrow">The Wedding Of</p>
+    <h1 class="names-script">Alfaber <span class="amp">&amp;</span> Lenny</h1>
+    <p class="greeting-text">
+      Atas rahmat dan karunia Tuhan Yang Maha Esa, kami bermaksud mengundang
+      Bapak/Ibu/Saudara/i untuk menghadiri resepsi pernikahan kami.
+    </p>
+    <p class="guest-label">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+    <p class="guest-name" id="guest-name">Tamu Undangan</p>
+    <button id="open-invitation-btn" class="btn-gold">Buka Undangan</button>
+  </div>
+</section>
+
+<!-- ============ MAIN INVITATION (hidden until opened) ============ -->
+<main id="main-invitation" hidden>
+
+  <!-- Latar pemandangan: padang rumput, danau, matahari terbenam, siluet kota -->
+  <div id="scenery-bg" aria-hidden="true">
+    <svg viewBox="0 0 1000 700" preserveAspectRatio="xMidYMax slice">
+      <defs>
+        <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#3B2A5C"/>
+          <stop offset="35%" stop-color="#9C4E6B"/>
+          <stop offset="60%" stop-color="#E4784A"/>
+          <stop offset="82%" stop-color="#F4B860"/>
+        </linearGradient>
+        <radialGradient id="sunGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#FFF3C8"/>
+          <stop offset="60%" stop-color="#FBCB6E"/>
+          <stop offset="100%" stop-color="#F4B860" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="lakeGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#F4B860"/>
+          <stop offset="40%" stop-color="#9C4E6B"/>
+          <stop offset="100%" stop-color="#3B2A5C"/>
+        </linearGradient>
+        <linearGradient id="grassGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#3F6B45"/>
+          <stop offset="100%" stop-color="#1F3A2E"/>
+        </linearGradient>
+      </defs>
+
+      <rect x="0" y="0" width="1000" height="430" fill="url(#skyGrad)"/>
+      <circle id="sun-glow" cx="500" cy="410" r="150" fill="url(#sunGrad)"/>
+      <circle cx="500" cy="410" r="55" fill="#FFF3D6"/>
+
+      <!-- Siluet kota di ujung kanan -->
+      <g fill="#20182E" opacity="0.85">
+        <rect x="770" y="330" width="26" height="100"/>
+        <rect x="800" y="300" width="20" height="130"/>
+        <rect x="824" y="345" width="30" height="85"/>
+        <rect x="858" y="310" width="22" height="120"/>
+        <rect x="884" y="360" width="26" height="70"/>
+        <rect x="914" y="325" width="18" height="105"/>
+        <rect x="936" y="350" width="34" height="80"/>
+        <rect x="806" y="290" width="6" height="14"/>
+        <rect x="864" y="300" width="6" height="14"/>
+      </g>
+
+      <!-- Danau dengan pantulan -->
+      <rect x="0" y="430" width="1000" height="90" fill="url(#lakeGrad)"/>
+      <g class="lake-shimmer" opacity="0.5" stroke="#FBCB6E" stroke-width="2">
+        <line x1="420" y1="450" x2="580" y2="450"/>
+        <line x1="440" y1="465" x2="560" y2="465"/>
+        <line x1="460" y1="480" x2="540" y2="480"/>
+      </g>
+
+      <!-- Padang rumput -->
+      <path d="M0,470 Q250,440 500,470 T1000,470 L1000,700 L0,700 Z" fill="url(#grassGrad)"/>
+      <g class="grass-blades" stroke="#4F8354" stroke-width="3" stroke-linecap="round" opacity="0.55">
+        <path d="M40,700 q4,-30 -2,-46"/><path d="M70,700 q6,-24 0,-40"/><path d="M110,700 q-4,-30 4,-44"/>
+        <path d="M160,700 q4,-26 -3,-42"/><path d="M230,700 q6,-30 -1,-46"/><path d="M300,700 q-5,-24 2,-40"/>
+        <path d="M600,700 q4,-30 -2,-46"/><path d="M680,700 q-6,-26 1,-42"/><path d="M760,700 q5,-30 -2,-46"/>
+        <path d="M860,700 q4,-24 -3,-40"/><path d="M930,700 q-4,-30 3,-44"/>
+      </g>
+    </svg>
+  </div>
+
+  <canvas id="fireworks-canvas"></canvas>
+
+  <!-- Verse -->
+  <section class="page verse-page" id="verse-page">
+    <div id="rose-shower-container" aria-hidden="true"></div>
+    <div class="flower-frame flower-frame--grand">
+      <div class="corner tl"><svg viewBox="0 0 200 200"><path class="vine" d="M8,192 C8,120 8,55 65,25 C100,6 150,6 192,8" fill="none"/><g transform="translate(65,25) scale(1.15)"><use href="#rose-bloom" class="rose-anim rose-anim-1"/></g><g transform="translate(130,10) scale(0.9)"><use href="#rose-bloom" class="rose-anim rose-anim-2"/></g><g transform="translate(20,150) scale(1.3)"><use href="#rose-bloom" class="rose-anim rose-anim-3"/></g></svg></div>
+      <div class="corner tr"><svg viewBox="0 0 200 200"><path class="vine" d="M8,192 C8,120 8,55 65,25 C100,6 150,6 192,8" fill="none"/><g transform="translate(65,25) scale(1.15)"><use href="#rose-bloom" class="rose-anim rose-anim-1"/></g><g transform="translate(130,10) scale(0.9)"><use href="#rose-bloom" class="rose-anim rose-anim-2"/></g><g transform="translate(20,150) scale(1.3)"><use href="#rose-bloom" class="rose-anim rose-anim-3"/></g></svg></div>
+      <div class="corner bl"><svg viewBox="0 0 200 200"><path class="vine" d="M8,192 C8,120 8,55 65,25 C100,6 150,6 192,8" fill="none"/><g transform="translate(65,25) scale(1.15)"><use href="#rose-bloom" class="rose-anim rose-anim-1"/></g><g transform="translate(130,10) scale(0.9)"><use href="#rose-bloom" class="rose-anim rose-anim-2"/></g><g transform="translate(20,150) scale(1.3)"><use href="#rose-bloom" class="rose-anim rose-anim-3"/></g></svg></div>
+      <div class="corner br"><svg viewBox="0 0 200 200"><path class="vine" d="M8,192 C8,120 8,55 65,25 C100,6 150,6 192,8" fill="none"/><g transform="translate(65,25) scale(1.15)"><use href="#rose-bloom" class="rose-anim rose-anim-1"/></g><g transform="translate(130,10) scale(0.9)"><use href="#rose-bloom" class="rose-anim rose-anim-2"/></g><g transform="translate(20,150) scale(1.3)"><use href="#rose-bloom" class="rose-anim rose-anim-3"/></g></svg></div>
+    </div>
+    <blockquote class="verse">
+      "Demikian mereka bukan lagi dua, melainkan satu. Karena itu, apa yang telah
+      dipersatukan Allah, tidak boleh diceraikan manusia."
+      <cite>— Matius 19:6</cite>
+    </blockquote>
+  </section>
+
+  <!-- Couple Profile -->
+  <section class="page profile-page">
+    <h2 class="section-title">Pasangan yang Telah Dipertemukan Tuhan</h2>
+    <p class="section-subtitle">pada 4 September 2021</p>
+
+    <div class="couple-grid">
+      <div class="profile-card reveal-left">
+        <div class="profile-photo-frame">
+          <img src="assets/profil-pria.jpg" alt="Alfaber Simangunsong" onerror="this.onerror=null;this.src='assets/placeholder-pria.svg';">
+        </div>
+        <h3 class="profile-name">Alfaber Simangunsong, B.Acc</h3>
+        <p class="profile-detail">Anak ke-1 dari 3 bersaudara</p>
+        <p class="profile-parents">Putra dari pasangan<br>Al. Yos Simangunsong &amp; Marlina</p>
+      </div>
+
+      <div class="couple-connector">&amp;</div>
+
+      <div class="profile-card reveal-right">
+        <div class="profile-photo-frame">
+          <img src="assets/profil-wanita.jpg" alt="Lenny Nova Kurniasari" onerror="this.onerror=null;this.src='assets/placeholder-wanita.svg';">
+        </div>
+        <h3 class="profile-name">Lenny Nova Kurniasari, B.Acc</h3>
+        <p class="profile-detail">Anak ke-3 dari 3 bersaudara</p>
+        <p class="profile-parents">Putri dari pasangan<br>Adi Subiantoro &amp; Iin Murtiningtyas</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section class="page gallery-page">
+    <h2 class="section-title">Kenangan Kami</h2>
+    <div class="gallery-slider" id="gallery-slider">
+      <!-- 10 slides injected/rendered here -->
+    </div>
+    <div class="gallery-dots" id="gallery-dots"></div>
+  </section>
+
+  <!-- Our Stories video -->
+  <section class="page video-page">
+    <h2 class="section-title">Our Stories</h2>
+    <div class="video-frame">
+      <video id="our-stories-video" controls playsinline poster="assets/foto1.jpg">
+        <source src="assets/Our Stories.mp4" type="video/mp4">
+        Video belum tersedia.
+      </video>
+    </div>
+  </section>
+
+  <!-- Countdown + Schedule + Maps -->
+  <section class="page schedule-page">
+    <h2 class="section-title">Save The Date</h2>
+    <p class="schedule-date">Minggu, 25 Oktober 2026</p>
+
+    <div class="countdown" id="countdown">
+      <div class="cd-box"><span id="cd-days">00</span><label>Hari</label></div>
+      <div class="cd-box"><span id="cd-hours">00</span><label>Jam</label></div>
+      <div class="cd-box"><span id="cd-mins">00</span><label>Menit</label></div>
+      <div class="cd-box"><span id="cd-secs">00</span><label>Detik</label></div>
+    </div>
+
+    <div class="location-cards">
+      <div class="location-card">
+        <h3>Pemberkatan</h3>
+        <p>Gedung GKJW Jemaat Gumuk Kembar</p>
+        <div class="map-embed">
+          <iframe
+            src="https://maps.google.com/maps?q=GKJW%20Jemaat%20Gumuk%20Kembar&t=&z=15&ie=UTF8&iwloc=&output=embed"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        </div>
+        <a class="btn-outline" href="https://maps.app.goo.gl/ziMhmNVpPiELZGuu8" target="_blank" rel="noopener">Buka di Google Maps</a>
+      </div>
+
+      <div class="location-card">
+        <h3>Resepsi</h3>
+        <p>Jl. Tandean No. 411, Dusun Gumuk Kembar RT/RW 002/001,
+           Kel. Sidorejo, Kec. Umbulsari, Jember, Jawa Timur
+           <br><em>(±100m ke arah barat dari GKJW Jemaat Gumuk Kembar)</em></p>
+        <div class="map-embed">
+          <iframe
+            src="https://maps.google.com/maps?q=Jl.+Tandean+411+Umbulsari+Jember&t=&z=16&ie=UTF8&iwloc=&output=embed"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        </div>
+        <a class="btn-outline" href="https://maps.app.goo.gl/ziMhmNVpPiELZGuu8" target="_blank" rel="noopener">Buka di Google Maps</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gift -->
+  <section class="page gift-page">
+    <h2 class="section-title">Tanda Kasih</h2>
+    <p class="gift-intro">Doa restu Bapak/Ibu/Saudara/i merupakan karunia yang sangat berarti bagi kami.
+       Namun jika ingin memberi tanda kasih, dapat melalui:</p>
+
+    <div class="bank-cards">
+      <div class="bank-card">
+        <div class="bank-logo bri">BRI</div>
+        <p class="bank-number" id="bri-number">113701001677531</p>
+        <p class="bank-name">a.n Alfaber Simangunsong</p>
+        <button class="btn-copy" data-copy="113701001677531">Salin Nomor</button>
+      </div>
+      <div class="bank-card">
+        <div class="bank-logo bca">BCA</div>
+        <p class="bank-number" id="bca-number">6710147793</p>
+        <p class="bank-name">a.n Lenny Nova Kurniasari</p>
+        <button class="btn-copy" data-copy="6710147793">Salin Nomor</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RSVP -->
+  <section class="page rsvp-page">
+    <h2 class="section-title">Konfirmasi Kehadiran</h2>
+    <form id="rsvp-form">
+      <label>Nama Anda
+        <input type="text" id="rsvp-nama" required placeholder="Nama lengkap">
+      </label>
+      <label>Konfirmasi Kehadiran
+        <select id="rsvp-hadir" required>
+          <option value="">Pilih...</option>
+          <option value="Hadir">Hadir</option>
+          <option value="Tidak Hadir">Tidak Hadir</option>
+        </select>
+      </label>
+      <label>Jumlah Tamu
+        <input type="number" id="rsvp-jumlah" min="1" value="1" required>
+      </label>
+      <label>Ucapan &amp; Doa
+        <textarea id="rsvp-ucapan" rows="3" placeholder="Tuliskan ucapan dan doa untuk kedua mempelai"></textarea>
+      </label>
+      <button type="submit" class="btn-gold" id="rsvp-submit-btn">Kirim Konfirmasi</button>
+      <p class="rsvp-status" id="rsvp-status"></p>
+    </form>
+
+    <div class="rsvp-wa-confirm" id="rsvp-wa-confirm" hidden>
+      <p>Konfirmasi juga langsung ke:</p>
+      <div class="wa-buttons">
+        <a class="btn-wa" id="wa-alfa" target="_blank" rel="noopener">Konfirmasi ke Alfa</a>
+        <a class="btn-wa" id="wa-lenny" target="_blank" rel="noopener">Konfirmasi ke Lenny</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Closing -->
+  <section class="page closing-page">
+    <div class="flower-frame flower-frame--grand">
+      <div class="corner tl"><svg viewBox="0 0 200 200"><path class="vine" d="M8,192 C8,120 8,55 65,25 C100,6 150,6 192,8" fill="none"/><g transform="translate(65,25) scale(1.15)"><use href="#rose-bloom" class="rose-anim rose-anim-1"/></g><g transform="translate(130,10) scale(0.9)"><use href="#rose-bloom" class="rose-anim rose-anim-2"/></g><g transform="translate(20,150) scale(1.3)"><use href="#rose-bloom" class="rose-anim rose-anim-3"/></g></svg></div>
+      <div class="corner tr"><svg viewBox="0 0 200 200"><path class="vine" d="M8,192 C8,120 8,55 65,25 C100,6 150,6 192,8" fill="none"/><g transform="translate(65,25) scale(1.15)"><use href="#rose-bloom" class="rose-anim rose-anim-1"/></g><g transform="translate(130,10) scale(0.9)"><use href="#rose-bloom" class="rose-anim rose-anim-2"/></g><g transform="translate(20,150) scale(1.3)"><use href="#rose-bloom" class="rose-anim rose-anim-3"/></g></svg></div>
+      <div class="corner bl"><svg viewBox="0 0 200 200"><path class="vine" d="M8,192 C8,120 8,55 65,25 C100,6 150,6 192,8" fill="none"/><g transform="translate(65,25) scale(1.15)"><use href="#rose-bloom" class="rose-anim rose-anim-1"/></g><g transform="translate(130,10) scale(0.9)"><use href="#rose-bloom" class="rose-anim rose-anim-2"/></g><g transform="translate(20,150) scale(1.3)"><use href="#rose-bloom" class="rose-anim rose-anim-3"/></g></svg></div>
+      <div class="corner br"><svg viewBox="0 0 200 200"><path class="vine" d="M8,192 C8,120 8,55 65,25 C100,6 150,6 192,8" fill="none"/><g transform="translate(65,25) scale(1.15)"><use href="#rose-bloom" class="rose-anim rose-anim-1"/></g><g transform="translate(130,10) scale(0.9)"><use href="#rose-bloom" class="rose-anim rose-anim-2"/></g><g transform="translate(20,150) scale(1.3)"><use href="#rose-bloom" class="rose-anim rose-anim-3"/></g></svg></div>
+    </div>
+    <h2 class="section-title">Sebuah Ketetapan Ilahi</h2>
+    <p class="closing-text">
+      Pernikahan bukan sekadar kontrak sosial, melainkan pengikatan jiwa oleh Allah sendiri —
+      sebuah ikatan yang bersifat abadi dan berlaku sekali seumur hidup.
+    </p>
+    <p class="closing-text">
+      Suami istri dipanggil untuk bersatu, saling mengasihi, dan tidak dipisahkan oleh alasan sepele.
+    </p>
+    <p class="closing-thanks">
+      Merupakan suatu kebahagiaan dan kehormatan bagi kami apabila Bapak/Ibu/Saudara/i
+      berkenan hadir dan memberikan doa restu.
+    </p>
+    <p class="closing-signature">Kami yang berbahagia,<br><span class="names-script small">Alfaber &amp; Lenny</span></p>
+  </section>
+
+  <!-- Ad footer -->
+  <footer class="ad-footer">
+    <a href="https://wa.me/6281246211461?text=Halo%20Mangunsong%20Tech.AI%2C%20saya%20tertarik%20membuat%20undangan%20pernikahan%20digital"
+       target="_blank" rel="noopener" class="btn-ad">
+      💌 Ingin undangan digital seperti ini? Order di <strong>MANGUNSONG TECH.AI</strong>
+    </a>
+  </footer>
+
+</main>
+
+<!-- Floating RSVP notification -->
+<div id="rsvp-toast-container" aria-live="polite"></div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
