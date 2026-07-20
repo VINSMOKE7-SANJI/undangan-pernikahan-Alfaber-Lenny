@@ -48,18 +48,62 @@ undangan/
   (efek kaca buram) supaya pemandangan tetap terlihat menembus di
   belakangnya.
 
+## 1c. Update Sesi 3 (perubahan terbaru)
+
+- 🔊 **Video kereta pegasus sekarang punya suara.** Karena browser tidak
+  mengizinkan video autoplay bersuara tanpa sentuhan pengguna, situs kini
+  menampilkan satu langkah **"Ketuk untuk Memulai"** tepat setelah loading
+  ring. Begitu tamu ketuk sekali, video kereta langsung jalan otomatis
+  lengkap dengan suaranya, lalu begitu video selesai langsung pindah ke
+  halaman sampul — **tanpa animasi gerbang/tirai lagi** (sudah dihapus
+  sesuai permintaan, karena kamu akan menambahkan efek itu langsung di
+  dalam video `kereta-pegasus.mp4`).
+- 🎵 **Musik latar** (`assets/backsound.mp3`) sekarang baru mulai diputar
+  setelah tombol **"Buka Undangan"** diklik (bukan sebelumnya). Tombol
+  🔇/🎵 juga baru muncul di pojok kanan atas setelah itu.
+- 🎆🌹 **Kembang api, bingkai bunga, dan kelopak bunga sekarang pakai
+  aset milikmu sendiri**, bukan animasi bawaan lagi. Nama file yang
+  harus kamu taruh di `assets/` — lihat tabel di bagian 2 di bawah.
+- 🌄 **Latar semua halaman setelah "Buka Undangan"** sekarang berupa
+  video (`assets/background.mp4`), menggantikan ilustrasi SVG sebelumnya.
+- 🖼️ **Galeri foto**: 10 foto sekarang muncul satu-per-satu dalam bentuk
+  grid, lalu 3 paragraf kisah kalian tampil bergantian, baru kemudian
+  berubah jadi slideshow otomatis seperti sebelumnya.
+- 📝 **RSVP → kolom "Konfirmasi WA"**: begitu tamu klik tombol
+  "Konfirmasi ke Alfa" atau "Konfirmasi ke Lenny", situs otomatis
+  mengirim update ke Google Sheet untuk mengisi kolom itu dengan
+  "Alfa" atau "Lenny". *Catatan jujur:* ini mencatat **tombol mana yang
+  tamu klik** (niat konfirmasi), bukan bukti bahwa pesan WhatsApp
+  benar-benar terkirim/dibaca — itu terjadi di aplikasi WhatsApp sendiri
+  dan berada di luar jangkauan sebuah website.
+- 🔔 **Notifikasi RSVP mengambang** sekarang muncul di **atas-tengah**
+  layar selama **10 detik**, isinya **Nama | Kehadiran | "Ucapan"**.
+- 🎯 Semua judul & isi teks di tiap sesi sekarang **rata tengah**, dan
+  tombol-tombol penting (Buka Undangan, Salin Rekening, Konfirmasi,
+  dll.) diberi animasi berdenyut halus supaya tamu langsung tahu itu
+  bisa diklik.
+
 ## 2. Aset yang WAJIB kamu tambahkan ke folder `assets/`
 
 Nama file harus **persis** seperti ini (huruf kecil semua):
 
 | File | Keterangan |
 |---|---|
-| `kereta-pegasus.mp4` | video 3D kuda pegasus menarik kereta pengantin (untuk splash pembuka). Kalau belum ada, situs otomatis memakai ilustrasi CSS sederhana sebagai cadangan. |
+| `kereta-pegasus.mp4` | video 3D kuda pegasus menarik kereta pengantin, **beserta suaranya** (untuk splash pembuka, diputar setelah tamu ketuk "Ketuk untuk Memulai"). Kalau kamu menambahkan efek gerbang/tirai, sisipkan langsung di dalam video ini. |
 | `profil-pria.jpg` | foto profil Alfaber |
 | `profil-wanita.jpg` | foto profil Lenny |
-| `foto1.jpg` s/d `foto10.jpg` | 10 foto kenangan (slideshow otomatis) |
+| `foto1.jpg` s/d `foto10.jpg` | 10 foto kenangan (grid → cerita → slideshow) |
 | `Our Stories.mp4` | video singkat kedua mempelai |
 | `backsound.mp3` | musik latar (sudah kamu tambahkan ✅) |
+| `background.mp4` | **video latar** untuk semua halaman setelah "Buka Undangan" diklik. Sebaiknya video pendek (10–20 detik) yang di-loop, resolusi tidak perlu terlalu besar (720p cukup) supaya tidak berat saat dibuka tamu. |
+| `kelopak-bunga.mp4` | video **kelopak bunga jatuh**, diputar terus-menerus (loop) di atas semua halaman setelah dibuka. **Wajib berlatar HITAM polos** dengan kelopak bunga terang — situs memakai teknik `mix-blend-mode: screen` supaya warna hitamnya otomatis "hilang" dan hanya kelopaknya yang terlihat menimpa konten. |
+| `kembang-api.mp4` | video **kembang api**, diputar SEKALI saat tombol "Buka Undangan" diklik. Sama seperti di atas: **wajib berlatar hitam polos**, supaya blending-nya bersih. |
+| `bingkai-bunga.png` | gambar **bingkai bunga**, format **PNG dengan latar transparan** (bagian tengah kosong, hanya bingkainya saja yang ada gambar). Dipakai di halaman sampul, ayat pembuka, dan penutup. |
+
+> 💡 Kalau video kelopak bunga / kembang api yang kamu punya berlatar
+> putih (bukan hitam), beri tahu aku — teknik blending-nya perlu diganti
+> (pakai `multiply` bukan `screen`) supaya hasilnya tetap bersih, bukan
+> kotak putih menutupi konten.
 
 > Catatan: nama file asli kamu ("profil-pria.jpg.jpeg") sepertinya double-extension
 > bawaan HP/export. Ganti nama filenya jadi `profil-pria.jpg` biasa (atau `.jpeg`,
