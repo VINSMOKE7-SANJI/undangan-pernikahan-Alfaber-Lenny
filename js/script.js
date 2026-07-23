@@ -2,9 +2,9 @@
    KONFIGURASI — GANTI SESUAI DATA KAMU
 ============================================================ */
 const CONFIG = {
-  APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbxKRWeJDz96k9IuSM_4BFyB2EG4mB3j0hmBnwMqGFvA9nVvTHd67jJ_jI9e-Hd_pXEZrw/exec",
+  APPS_SCRIPT_URL: "PASTE_URL_WEB_APP_APPS_SCRIPT_DI_SINI",
   WEDDING_DATE: "2026-10-25T09:00:00+07:00",
-  WA_ALFA: "6281247770168",
+  WA_ALFA: "6281246211461",
   WA_LENNY: "6285859866900",
   TOTAL_GALLERY_PHOTOS: 10,
   GALLERY_INTERVAL_MS: 3000,
@@ -105,28 +105,42 @@ const MusicPlayer = (function(){
   const audio = document.getElementById("bg-music");
   const btn = document.getElementById("music-toggle");
 
-  function updateIcon(){ btn.textContent = (!audio.paused && !audio.muted) ? "🎵" : "🔇"; }
+  function updateIcon(){
+    btn.textContent = (!audio.paused && !audio.muted) ? "🎵" : "🔇";
+  }
+
+  audio.addEventListener("play", updateIcon);
+  audio.addEventListener("pause", updateIcon);
+  audio.addEventListener("error", () => {
+    btn.textContent = "⚠️";
+    btn.title = "assets/backsound.mp3 tidak ditemukan/gagal dimuat — cek nama file & pastikan folder assets/ tidak ikut tertimpa saat update kode.";
+    console.error("File assets/backsound.mp3 tidak ditemukan/tidak bisa dimuat.");
+  });
 
   btn.addEventListener("click", () => {
     if (audio.paused || audio.muted) {
       audio.muted = false;
-      audio.play().catch(err => console.warn("Musik gagal diputar:", err));
+      audio.play().then(updateIcon).catch(err => {
+        console.warn("Musik gagal diputar:", err);
+        updateIcon();
+      });
     } else {
-      audio.muted = true;
+      audio.pause();
+      updateIcon();
     }
-    updateIcon();
   });
-
-  audio.addEventListener("error", () => console.warn("File assets/backsound.mp3 tidak ditemukan/tidak bisa dimuat."));
 
   return {
     start(){
-      btn.hidden = false;
       audio.muted = false;
-      audio.currentTime = 0;
+      try { audio.currentTime = 0; } catch(e){ /* abaikan kalau metadata belum siap */ }
       const p = audio.play();
-      if (p && p.catch) p.catch(err => console.warn("Musik gagal autoplay:", err));
-      updateIcon();
+      if (p && p.then) {
+        p.then(updateIcon).catch(err => {
+          console.warn("Musik gagal autoplay (kemungkinan perlu klik tombol musik secara manual):", err);
+          updateIcon();
+        });
+      }
     }
   };
 })();
@@ -197,11 +211,13 @@ function runGallerySequence(){
   const slider = document.getElementById("gallery-slider");
   const dotsWrap = document.getElementById("gallery-dots");
 
-  // --- Tahap 1: grid 10 foto muncul satu per satu ---
+  // --- Tahap 1: foto gaya polaroid muncul satu per satu, rotasi acak ---
   const staggerMs = 180;
   for (let i = 1; i <= total; i++) {
     const item = document.createElement("div");
     item.className = "grid-item";
+    const rot = (Math.random() * 16 - 8).toFixed(1); // -8deg s/d 8deg
+    item.style.setProperty("--rot", rot + "deg");
     item.style.animationDelay = (i * staggerMs) + "ms";
     const img = document.createElement("img");
     img.src = `assets/foto${i}.jpg`;
@@ -211,28 +227,23 @@ function runGallerySequence(){
     item.appendChild(img);
     grid.appendChild(item);
   }
-  const gridDuration = total * staggerMs + 700;
+  const gridDuration = total * staggerMs + 800;
 
-  // --- Tahap 2: 3 paragraf kenangan muncul bergantian ---
+  // --- Tahap 2: 3 paragraf kenangan slide masuk bergantian kiri/kanan,
+  //     dan TETAP TERLIHAT setelah muncul (tidak dihilangkan lagi) ---
   const paraDelayAfterGrid = 900;
-  const paraDurationEach = 4200;
+  const paraStagger = 1400;
   setTimeout(() => {
     story.hidden = false;
     const paras = story.querySelectorAll(".story-para");
     paras.forEach((p, idx) => {
-      setTimeout(() => {
-        paras.forEach(pp => pp.classList.remove("active"));
-        p.classList.add("active");
-      }, idx * paraDurationEach);
+      setTimeout(() => { p.classList.add("shown"); }, idx * paraStagger);
     });
 
-    // --- Tahap 3: setelah 3 paragraf selesai, masuk ke slideshow ---
-    const totalStoryTime = paras.length * paraDurationEach;
+    // --- Tahap 3: setelah paragraf terakhir muncul + jeda baca, lanjut ke slideshow ---
+    const readPause = 3500;
+    const totalStoryTime = (paras.length - 1) * paraStagger + readPause;
     setTimeout(() => {
-      story.style.transition = "opacity .8s ease";
-      story.style.opacity = "0";
-      setTimeout(() => { story.hidden = true; }, 800);
-
       slider.hidden = false;
       dotsWrap.hidden = false;
       requestAnimationFrame(() => {
@@ -380,7 +391,7 @@ document.getElementById("rsvp-form").addEventListener("submit", async function(e
     status.style.color = "#2E5442";
     document.getElementById("rsvp-form").reset();
     showWaOptions();
-    showRsvpToast(nama, hadir, ucapan);
+    fetchRsvpList(); // langsung refresh daftar & jumlah setelah kirim
   } catch (err) {
     console.error("Gagal mengirim RSVP ke Google Sheet:", err);
     status.textContent = "Konfirmasi belum tersimpan ke sistem kami (masalah koneksi ke Google Sheet). Silakan gunakan tombol WhatsApp di bawah, atau coba lagi.";
@@ -411,40 +422,52 @@ document.getElementById("rsvp-form").addEventListener("submit", async function(e
 });
 
 /* ============================================================
-   11. NOTIFIKASI RSVP MENGAMBANG — ATAS TENGAH, 10 DETIK
-        Format: Nama | Kehadiran | Ucapan
+   11. DAFTAR UCAPAN RSVP + JUMLAH HADIR/TIDAK HADIR
+        (tampil langsung di halaman, di bawah tombol konfirmasi,
+        bukan notifikasi mengambang lagi)
 ============================================================ */
-function showRsvpToast(nama, hadir, ucapan){
-  const container = document.getElementById("rsvp-toast-container");
-  const toast = document.createElement("div");
-  toast.className = "rsvp-toast";
-  const ucapanText = ucapan && ucapan.trim() ? ucapan.trim() : "—";
-  toast.innerHTML = `<b>${escapeHtml(nama)}</b> &middot; ${escapeHtml(hadir)}<br>"${escapeHtml(ucapanText)}"`;
-  container.appendChild(toast);
-  setTimeout(() => toast.remove(), 10000);
+function renderRsvpList(data){
+  const listEl = document.getElementById("rsvp-list");
+  const countHadir = document.getElementById("count-hadir");
+  const countTidak = document.getElementById("count-tidak");
+  if (!listEl) return;
+
+  countHadir.textContent = data.hadirCount != null ? data.hadirCount : 0;
+  countTidak.textContent = data.tidakCount != null ? data.tidakCount : 0;
+
+  const entries = Array.isArray(data.entries) ? data.entries : [];
+  if (!entries.length) {
+    listEl.innerHTML = `<li class="rsvp-list-empty">Belum ada ucapan. Jadilah yang pertama!</li>`;
+    return;
+  }
+
+  listEl.innerHTML = entries.map(entry => {
+    const statusClass = (entry.hadir || "").toLowerCase().includes("tidak") ? "tidak" : "hadir";
+    const ucapanText = entry.ucapan && String(entry.ucapan).trim() ? String(entry.ucapan).trim() : "—";
+    return `<li>
+      <div class="li-top">
+        <span class="li-name">${escapeHtml(entry.nama || "Tamu")}</span>
+        <span class="li-status ${statusClass}">${escapeHtml(entry.hadir || "-")}</span>
+      </div>
+      <div class="li-msg">"${escapeHtml(ucapanText)}"</div>
+    </li>`;
+  }).join("");
 }
 function escapeHtml(str){
   const div = document.createElement("div");
-  div.textContent = str;
+  div.textContent = str == null ? "" : String(str);
   return div.innerHTML;
 }
 
-let lastSeenTimestamp = null;
-async function pollRsvpUpdates(){
+async function fetchRsvpList(){
   if (!CONFIG.APPS_SCRIPT_URL.startsWith("http")) return;
   try {
     const res = await fetch(`${CONFIG.APPS_SCRIPT_URL}?action=latest`);
     const data = await res.json();
-    if (Array.isArray(data) && data.length) {
-      const newest = data[data.length - 1];
-      const stamp = newest.waktu;
-      if (stamp && stamp !== lastSeenTimestamp) {
-        lastSeenTimestamp = stamp;
-        showRsvpToast(newest.nama, newest.hadir, newest.ucapan);
-      }
-    }
+    renderRsvpList(data);
   } catch (err) {
     // diam-diam gagal — tidak mengganggu pengalaman tamu
   }
 }
-setInterval(pollRsvpUpdates, CONFIG.RSVP_POLL_INTERVAL_MS);
+fetchRsvpList(); // muat daftar begitu halaman dibuka, tanpa perlu submit dulu
+setInterval(fetchRsvpList, CONFIG.RSVP_POLL_INTERVAL_MS);
