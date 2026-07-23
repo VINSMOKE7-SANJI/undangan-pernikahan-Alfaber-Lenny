@@ -20,7 +20,7 @@
  * ============================================================
  */
 
-const SHEET_NAME = "TAMU DIGITAL"; // ganti sesuai nama tab sheet kamu
+const SHEET_NAME = "Sheet1"; // ganti sesuai nama tab sheet kamu
 
 function doPost(e) {
   try {
@@ -68,9 +68,9 @@ function doPost(e) {
 }
 
 /**
- * Dipanggil oleh script.js untuk polling notifikasi RSVP terbaru
- * tanpa perlu refresh halaman. Mengembalikan beberapa entri terakhir,
- * termasuk ucapan (untuk notifikasi mengambang Nama | Kehadiran | Ucapan).
+ * Dipanggil oleh script.js untuk menampilkan daftar ucapan RSVP +
+ * jumlah hadir/tidak hadir langsung di halaman (bukan notifikasi
+ * mengambang lagi), tanpa perlu refresh halaman.
  */
 function doGet(e) {
   try {
@@ -79,7 +79,17 @@ function doGet(e) {
 
     const values = sheet.getDataRange().getValues();
     const rows = values.slice(1); // lewati header
-    const last10 = rows.slice(-10).map(row => ({
+
+    let hadirCount = 0;
+    let tidakCount = 0;
+    rows.forEach(row => {
+      const status = String(row[2] || "").toLowerCase();
+      if (status.indexOf("tidak") !== -1) tidakCount++;
+      else if (status.indexOf("hadir") !== -1) hadirCount++;
+    });
+
+    // Terbaru di paling atas daftar
+    const entries = rows.slice(-50).reverse().map(row => ({
       waktu: row[0] instanceof Date ? row[0].toISOString() : String(row[0]),
       nama: row[1],
       hadir: row[2],
@@ -88,7 +98,7 @@ function doGet(e) {
       ucapan: row[5],
     }));
 
-    return jsonOutput(last10);
+    return jsonOutput({ status: "ok", hadirCount, tidakCount, entries });
   } catch (err) {
     return jsonOutput({ status: "error", message: String(err) });
   }
