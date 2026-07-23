@@ -2,7 +2,7 @@
    KONFIGURASI — GANTI SESUAI DATA KAMU
 ============================================================ */
 const CONFIG = {
-  APPS_SCRIPT_URL: "PASTE_URL_WEB_APP_APPS_SCRIPT_DI_SINI",
+  APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbxKRWeJDz96k9IuSM_4BFyB2EG4mB3j0hmBnwMqGFvA9nVvTHd67jJ_jI9e-Hd_pXEZrw/exec",
   WEDDING_DATE: "2026-10-25T09:00:00+07:00",
   WA_ALFA: "6281246211461",
   WA_LENNY: "6285859866900",
