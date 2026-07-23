@@ -33,7 +33,7 @@
 <audio id="bg-music" loop preload="auto">
   <source src="assets/backsound.mp3" type="audio/mpeg">
 </audio>
-<button id="music-toggle" aria-label="Aktifkan/matikan musik" title="Musik" hidden>🔇</button>
+<button id="music-toggle" aria-label="Aktifkan/matikan musik" title="Klik untuk nyala/mati musik">🔇</button>
 
 <!-- ============ AMBIENT BACKGROUND (untuk halaman sampul sebelum dibuka) ============ -->
 <div id="ambient-bg" aria-hidden="true">
@@ -140,16 +140,16 @@
     </div>
   </section>
 
-  <!-- Gallery: grid muncul satu-satu -> paragraf kenangan -> slideshow -->
+  <!-- Gallery: polaroid muncul satu-satu -> 3 paragraf kenangan (slide bergantian, tetap terlihat) -> slideshow -->
   <section class="page gallery-page" id="gallery-page">
     <h2 class="section-title">Kenangan Kami</h2>
 
     <div class="gallery-grid" id="gallery-grid"></div>
 
     <div class="gallery-story" id="gallery-story" hidden>
-      <p class="story-para" data-p="1">Perjalanan baru akan segera tiba, ini akan menjadi tantangan baru dari kisah kami berdua.</p>
-      <p class="story-para" data-p="2">Di setiap musim kehidupan, Tuhan tidak pernah meninggalkan kami. Ketika langkah terasa berat, kasih dan penyertaan-Nya selalu menguatkan. Setiap perbedaan dan ujian mengajarkan kami untuk saling mengasihi, membentuk kami menjadi pribadi yang lebih dewasa, dan setiap doa membawa kami semakin dekat kepada rencana-Nya.</p>
-      <p class="story-para" data-p="3">Apa yang dahulu hanya menjadi harapan, kini Tuhan genapi menjadi kenyataan. Pelaminan ini bukanlah akhir dari perjalanan cinta kami, melainkan awal dari sebuah perjanjian kudus yang dipersatukan oleh kasih Tuhan. Sebab kami percaya, apa yang telah dipersatukan Tuhan, tidak boleh diceraikan manusia. Amin.</p>
+      <p class="story-para from-left" data-p="1">Perjalanan baru akan segera tiba, ini akan menjadi tantangan baru dari kisah kami berdua.</p>
+      <p class="story-para from-right" data-p="2">Di setiap musim kehidupan, Tuhan tidak pernah meninggalkan kami. Ketika langkah terasa berat, kasih dan penyertaan-Nya selalu menguatkan. Setiap perbedaan dan ujian mengajarkan kami untuk saling mengasihi, membentuk kami menjadi pribadi yang lebih dewasa, dan setiap doa membawa kami semakin dekat kepada rencana-Nya.</p>
+      <p class="story-para from-left" data-p="3">Apa yang dahulu hanya menjadi harapan, kini Tuhan genapi menjadi kenyataan. Pelaminan ini bukanlah akhir dari perjalanan cinta kami, melainkan awal dari sebuah perjanjian kudus yang dipersatukan oleh kasih Tuhan. Sebab kami percaya, apa yang telah dipersatukan Tuhan, tidak boleh diceraikan manusia. Amin.</p>
     </div>
 
     <div class="gallery-slider" id="gallery-slider" hidden>
@@ -261,6 +261,12 @@
         <a class="btn-wa btn-pulse" id="wa-lenny" data-source="Lenny" target="_blank" rel="noopener">Konfirmasi ke Lenny</a>
       </div>
     </div>
+
+    <div class="rsvp-summary" id="rsvp-summary">
+      <span class="rsvp-count hadir">Hadir <b id="count-hadir">0</b></span>
+      <span class="rsvp-count tidak">Tidak Hadir <b id="count-tidak">0</b></span>
+    </div>
+    <ul class="rsvp-list" id="rsvp-list"></ul>
   </section>
 
   <!-- Closing -->
@@ -292,9 +298,6 @@
   </footer>
 
 </main>
-
-<!-- Floating RSVP notification (atas-tengah) -->
-<div id="rsvp-toast-container" aria-live="polite"></div>
 
 <script src="js/script.js"></script>
 </body>
