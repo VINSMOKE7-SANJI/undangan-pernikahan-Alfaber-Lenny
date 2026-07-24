@@ -20,7 +20,7 @@
  * ============================================================
  */
 
-const SHEET_NAME = "TAMU DIGITAL"; // ganti sesuai nama tab sheet kamu
+const SHEET_NAME = "Sheet1"; // ganti sesuai nama tab sheet kamu
 
 function doPost(e) {
   try {
