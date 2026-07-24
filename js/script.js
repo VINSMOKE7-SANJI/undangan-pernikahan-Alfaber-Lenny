@@ -2,7 +2,7 @@
    KONFIGURASI — GANTI SESUAI DATA KAMU
 ============================================================ */
 const CONFIG = {
-  APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbxKRWeJDz96k9IuSM_4BFyB2EG4mB3j0hmBnwMqGFvA9nVvTHd67jJ_jI9e-Hd_pXEZrw/exec",
+  APPS_SCRIPT_URL: "PASTE_URL_WEB_APP_APPS_SCRIPT_DI_SINI",
   WEDDING_DATE: "2026-10-25T09:00:00+07:00",
   WA_ALFA: "6281246211461",
   WA_LENNY: "6285859866900",
@@ -25,77 +25,11 @@ let lastRsvpRow = null; // baris terakhir di Google Sheet, dipakai untuk update 
 })();
 
 /* ============================================================
-   2. SPARKLE EMAS DI HALAMAN SAMPUL
-============================================================ */
-(function spawnSparkles(){
-  const container = document.getElementById("sparkle-container");
-  if (!container) return;
-  const total = 26;
-  for (let i = 0; i < total; i++) {
-    const s = document.createElement("span");
-    s.className = "sparkle";
-    s.style.left = Math.random() * 100 + "%";
-    s.style.top = Math.random() * 100 + "%";
-    s.style.animationDuration = (2 + Math.random() * 3) + "s";
-    s.style.animationDelay = (Math.random() * 4) + "s";
-    container.appendChild(s);
-  }
-})();
-
-/* ============================================================
-   3. LOADING -> TAP TO START -> VIDEO KERETA (DENGAN SUARA) -> COVER
-   Browser TIDAK mengizinkan video autoplay dengan suara tanpa ada
-   sentuhan/klik dari pengguna terlebih dahulu — karena itu ada
-   satu langkah "Ketuk untuk Memulai" di sini. Setelah diketuk,
-   semuanya berjalan otomatis (video + suara, lalu ke sampul).
+   2. LOADING -> COVER (simpel, tanpa video splash/gerbang)
 ============================================================ */
 window.addEventListener("load", () => {
   const loading = document.getElementById("loading-screen");
-  const startPrompt = document.getElementById("start-prompt");
-  const splash = document.getElementById("splash-video");
-  const video = document.getElementById("carriage-video");
-  const cover = document.getElementById("cover");
-
-  video.addEventListener("error", () => splash.classList.add("no-video"));
-
-  // Loading ring tampil sebentar, lalu tampilkan tombol "Ketuk untuk Memulai"
-  setTimeout(() => {
-    loading.classList.add("hide");
-    startPrompt.hidden = false;
-  }, 1500);
-
-  function goToCoverDirectly(){
-    splash.style.display = "none";
-    cover.scrollIntoView({ behavior: "instant" });
-  }
-
-  document.getElementById("start-prompt-btn").addEventListener("click", () => {
-    startPrompt.classList.add("hide");
-    splash.scrollIntoView({ behavior: "instant" });
-
-    video.muted = false;
-    video.volume = 1;
-    const playPromise = video.play();
-    if (playPromise && playPromise.catch) {
-      playPromise.catch(err => {
-        console.warn("Video kereta tidak bisa diputar otomatis, lanjut ke sampul:", err);
-        goToCoverDirectly();
-      });
-    }
-
-    // Kalau video tidak tersedia/gagal dimuat, langsung lanjut ke sampul
-    if (video.readyState === 0) {
-      setTimeout(() => { if (video.videoWidth === 0) goToCoverDirectly(); }, 2500);
-    }
-
-    // Setelah video kereta SELESAI, langsung tampilkan sampul.
-    // (Tidak ada lagi animasi gerbang/tirai terpisah — jika kamu
-    // menambahkan efek gerbang, sisipkan langsung di dalam video ini.)
-    video.addEventListener("ended", goToCoverDirectly, { once: true });
-
-    // Jaga-jaga kalau video sangat panjang atau event 'ended' tidak terpicu
-    setTimeout(goToCoverDirectly, 20000);
-  }, { once: true });
+  setTimeout(() => { loading.classList.add("hide"); }, 1200);
 });
 
 /* ============================================================
@@ -104,8 +38,10 @@ window.addEventListener("load", () => {
 const MusicPlayer = (function(){
   const audio = document.getElementById("bg-music");
   const btn = document.getElementById("music-toggle");
+  let pending = false; // mencegah play()/pause() tumpang tindih (penyebab AbortError)
 
   function updateIcon(){
+    if (pending) { btn.textContent = "…"; return; }
     btn.textContent = (!audio.paused && !audio.muted) ? "🎵" : "🔇";
   }
 
@@ -117,69 +53,49 @@ const MusicPlayer = (function(){
     console.error("File assets/backsound.mp3 tidak ditemukan/tidak bisa dimuat.");
   });
 
+  function safePlay(){
+    if (pending) return;
+    pending = true;
+    updateIcon();
+    audio.muted = false;
+    const p = audio.play();
+    const done = () => { pending = false; updateIcon(); };
+    if (p && p.then) p.then(done).catch(err => {
+      // AbortError normal terjadi kalau koneksi lambat lalu tombol
+      // diklik lagi sebelum play() selesai — bukan error fatal.
+      if (err.name !== "AbortError") console.warn("Musik gagal diputar:", err);
+      done();
+    });
+    else done();
+  }
+  function safePause(){
+    if (pending) return;
+    pending = true;
+    audio.pause();
+    pending = false;
+    updateIcon();
+  }
+
   btn.addEventListener("click", () => {
-    if (audio.paused || audio.muted) {
-      audio.muted = false;
-      audio.play().then(updateIcon).catch(err => {
-        console.warn("Musik gagal diputar:", err);
-        updateIcon();
-      });
-    } else {
-      audio.pause();
-      updateIcon();
-    }
+    if (pending) return; // abaikan klik ganda selagi masih memuat
+    if (audio.paused || audio.muted) safePlay(); else safePause();
   });
 
-  return {
-    start(){
-      audio.muted = false;
-      try { audio.currentTime = 0; } catch(e){ /* abaikan kalau metadata belum siap */ }
-      const p = audio.play();
-      if (p && p.then) {
-        p.then(updateIcon).catch(err => {
-          console.warn("Musik gagal autoplay (kemungkinan perlu klik tombol musik secara manual):", err);
-          updateIcon();
-        });
-      }
-    }
-  };
+  return { start(){ safePlay(); } };
 })();
 
 /* ============================================================
-   5. TOMBOL "BUKA UNDANGAN" -> tampilkan undangan + musik + kembang api
+   4. TOMBOL "BUKA UNDANGAN" -> tampilkan undangan + mulai musik
 ============================================================ */
 document.getElementById("open-invitation-btn").addEventListener("click", () => {
   const main = document.getElementById("main-invitation");
   main.hidden = false;
   document.getElementById("cover").style.display = "none";
-  document.getElementById("splash-video").style.display = "none";
 
   MusicPlayer.start();
-  playFireworksVideo();
 
   main.scrollIntoView({ behavior: "smooth" });
   initGalleryReveal(); // baru dipicu sekali di sini agar IntersectionObserver aktif setelah main tampil
-});
-
-/* ============================================================
-   6. KEMBANG API — video overlay (assets/kembang-api.mp4), sekali jalan
-============================================================ */
-function playFireworksVideo(){
-  const v = document.getElementById("fireworks-video");
-  if (!v) return;
-  v.currentTime = 0;
-  v.classList.add("show");
-  const p = v.play();
-  if (p && p.catch) p.catch(() => { v.classList.remove("show"); });
-  v.addEventListener("ended", () => v.classList.remove("show"), { once: true });
-  // Jaga-jaga kalau file belum ada / gagal dimuat
-  v.addEventListener("error", () => v.classList.remove("show"), { once: true });
-}
-
-/* Sembunyikan video latar/kelopak dengan rapi kalau file belum diupload */
-["scenery-video", "petals-video"].forEach(id => {
-  const v = document.getElementById(id);
-  if (v) v.addEventListener("error", () => { v.style.display = "none"; });
 });
 
 /* ============================================================
@@ -216,8 +132,6 @@ function runGallerySequence(){
   for (let i = 1; i <= total; i++) {
     const item = document.createElement("div");
     item.className = "grid-item";
-    const rot = (Math.random() * 16 - 8).toFixed(1); // -8deg s/d 8deg
-    item.style.setProperty("--rot", rot + "deg");
     item.style.animationDelay = (i * staggerMs) + "ms";
     const img = document.createElement("img");
     img.src = `assets/foto${i}.jpg`;
