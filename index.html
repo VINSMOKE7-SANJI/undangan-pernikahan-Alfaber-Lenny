@@ -3,119 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Undangan Pernikahan Alfaber & Lenny</title>
+<title>Alfaber & Lenny — The Wedding</title>
 <meta name="description" content="Undangan pernikahan digital Alfaber Simangunsong & Lenny Nova Kurniasari">
+<link rel="icon" href="data:,">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<div id="app-frame">
 
-<!-- ============ LOADING SCREEN ============ -->
+<!-- ============ LOADING ============ -->
 <div id="loading-screen">
-  <div class="gold-ring"></div>
-  <p class="loading-text">Menyiapkan Undangan...</p>
+  <div class="loading-mark">A&nbsp;&amp;&nbsp;L</div>
+  <div class="loading-line"></div>
 </div>
 
-<!-- ============ TAP TO START (wajib agar video kereta bisa berbunyi) ============ -->
-<div id="start-prompt" hidden>
-  <div class="start-prompt-inner">
-    <p class="start-prompt-title">Alfaber &amp; Lenny</p>
-    <button id="start-prompt-btn" class="btn-gold">Ketuk untuk Memulai</button>
-    <p class="start-prompt-note">agar musik &amp; video dapat diputar dengan suara</p>
-  </div>
-</div>
-
-<!-- ============ MUSIK LATAR (mulai setelah tombol "Buka Undangan") ============ -->
+<!-- ============ MUSIK LATAR ============ -->
 <audio id="bg-music" loop preload="auto">
   <source src="assets/backsound.mp3" type="audio/mpeg">
 </audio>
 <button id="music-toggle" aria-label="Aktifkan/matikan musik" title="Klik untuk nyala/mati musik">🔇</button>
 
-<!-- ============ AMBIENT BACKGROUND (untuk halaman sampul sebelum dibuka) ============ -->
-<div id="ambient-bg" aria-hidden="true">
-  <div class="sky"></div>
-  <div class="clouds">
-    <span class="cloud c1"></span>
-    <span class="cloud c2"></span>
-    <span class="cloud c3"></span>
-  </div>
-  <svg class="bird b1" viewBox="0 0 60 30"><path d="M0 15 Q15 0 30 15 Q45 0 60 15" fill="none" stroke="#4b4b4b" stroke-width="2.5" stroke-linecap="round"/></svg>
-  <svg class="bird b2" viewBox="0 0 60 30"><path d="M0 15 Q15 0 30 15 Q45 0 60 15" fill="none" stroke="#4b4b4b" stroke-width="2.5" stroke-linecap="round"/></svg>
-  <svg class="bird b3" viewBox="0 0 60 30"><path d="M0 15 Q15 0 30 15 Q45 0 60 15" fill="none" stroke="#4b4b4b" stroke-width="2.5" stroke-linecap="round"/></svg>
-  <div id="sparkle-container"></div>
-</div>
-
-<!-- ============ SPLASH: video kereta pegasus (dengan suara, setelah tap) ============ -->
-<section id="splash-video" class="fullscreen">
-  <video id="carriage-video" playsinline preload="auto">
-    <source src="assets/kereta-pegasus.mp4" type="video/mp4">
-  </video>
-  <div class="video-fallback">
-    <div class="carriage-illustration">
-      <div class="castle"></div>
-      <div class="road"></div>
-      <div class="carriage-anim">🐎🐎 🛺</div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ COVER / GREETING ============ -->
+<!-- ============ COVER ============ -->
 <section id="cover" class="fullscreen page">
-  <div class="cover-glow" aria-hidden="true"></div>
-  <div class="flower-frame-img" aria-hidden="true">
-    <img src="assets/bingkai-bunga.png" alt="" onerror="this.parentElement.style.display='none'">
-  </div>
   <div class="cover-content">
     <p class="eyebrow">The Wedding Of</p>
-    <h1 class="names-script">Alfaber <span class="amp">&amp;</span> Lenny</h1>
+    <h1 class="names-modern">Alfaber<span class="amp">&amp;</span>Lenny</h1>
+    <div class="hr-thin"></div>
     <p class="greeting-text">
       Atas rahmat dan karunia Tuhan Yang Maha Esa, kami bermaksud mengundang
       Bapak/Ibu/Saudara/i untuk menghadiri resepsi pernikahan kami.
     </p>
-    <p class="guest-label">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+    <p class="guest-label">Kepada Yth.</p>
     <p class="guest-name" id="guest-name">Tamu Undangan</p>
-    <button id="open-invitation-btn" class="btn-gold btn-pulse">Buka Undangan</button>
+    <button id="open-invitation-btn" class="btn-line btn-breathe">Buka Undangan</button>
   </div>
 </section>
 
 <!-- ============ MAIN INVITATION (hidden until opened) ============ -->
 <main id="main-invitation" hidden>
 
-  <!-- Latar video pemandangan untuk semua halaman setelah undangan dibuka -->
-  <video id="scenery-video" autoplay muted loop playsinline aria-hidden="true">
-    <source src="assets/background.mp4" type="video/mp4">
-  </video>
-
-  <!-- Overlay kelopak bunga jatuh (video, terus-menerus) -->
-  <video id="petals-video" autoplay muted loop playsinline aria-hidden="true">
-    <source src="assets/kelopak-bunga.mp4" type="video/mp4">
-  </video>
-
-  <!-- Overlay kembang api (video, sekali jalan saat undangan dibuka) -->
-  <video id="fireworks-video" muted playsinline aria-hidden="true">
-    <source src="assets/kembang-api.mp4" type="video/mp4">
-  </video>
-
   <!-- Verse -->
-  <section class="page verse-page" id="verse-page">
-    <div class="flower-frame-img" aria-hidden="true">
-      <img src="assets/bingkai-bunga.png" alt="" onerror="this.parentElement.style.display='none'">
-    </div>
+  <section class="page verse-page">
+    <div class="hr-thin small"></div>
     <blockquote class="verse">
       "Demikian mereka bukan lagi dua, melainkan satu. Karena itu, apa yang telah
       dipersatukan Allah, tidak boleh diceraikan manusia."
       <cite>&mdash; Matius 19:6</cite>
     </blockquote>
+    <div class="hr-thin small"></div>
   </section>
 
   <!-- Couple Profile -->
   <section class="page profile-page">
     <h2 class="section-title">Pasangan yang Telah Dipertemukan Tuhan</h2>
-    <p class="section-subtitle">pada 4 September 2021</p>
+    <p class="section-subtitle">4 September 2021</p>
 
     <div class="couple-grid">
       <div class="profile-card reveal-left">
@@ -140,7 +86,7 @@
     </div>
   </section>
 
-  <!-- Gallery: polaroid muncul satu-satu -> 3 paragraf kenangan (slide bergantian, tetap terlihat) -> slideshow -->
+  <!-- Gallery -->
   <section class="page gallery-page" id="gallery-page">
     <h2 class="section-title">Kenangan Kami</h2>
 
@@ -152,9 +98,7 @@
       <p class="story-para from-left" data-p="3">Apa yang dahulu hanya menjadi harapan, kini Tuhan genapi menjadi kenyataan. Pelaminan ini bukanlah akhir dari perjalanan cinta kami, melainkan awal dari sebuah perjanjian kudus yang dipersatukan oleh kasih Tuhan. Sebab kami percaya, apa yang telah dipersatukan Tuhan, tidak boleh diceraikan manusia. Amin.</p>
     </div>
 
-    <div class="gallery-slider" id="gallery-slider" hidden>
-      <!-- 10 slides dirender oleh JS -->
-    </div>
+    <div class="gallery-slider" id="gallery-slider" hidden></div>
     <div class="gallery-dots" id="gallery-dots" hidden></div>
   </section>
 
@@ -190,7 +134,7 @@
             src="https://maps.google.com/maps?q=GKJW%20Jemaat%20Gumuk%20Kembar&t=&z=15&ie=UTF8&iwloc=&output=embed"
             loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
         </div>
-        <a class="btn-outline btn-pulse" href="https://maps.app.goo.gl/ziMhmNVpPiELZGuu8" target="_blank" rel="noopener">Buka di Google Maps</a>
+        <a class="btn-line-sm" href="https://maps.app.goo.gl/ziMhmNVpPiELZGuu8" target="_blank" rel="noopener">Buka di Google Maps</a>
       </div>
 
       <div class="location-card">
@@ -203,7 +147,7 @@
             src="https://maps.google.com/maps?q=Jl.+Tandean+411+Umbulsari+Jember&t=&z=16&ie=UTF8&iwloc=&output=embed"
             loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
         </div>
-        <a class="btn-outline btn-pulse" href="https://maps.app.goo.gl/ziMhmNVpPiELZGuu8" target="_blank" rel="noopener">Buka di Google Maps</a>
+        <a class="btn-line-sm" href="https://maps.app.goo.gl/ziMhmNVpPiELZGuu8" target="_blank" rel="noopener">Buka di Google Maps</a>
       </div>
     </div>
   </section>
@@ -216,16 +160,16 @@
 
     <div class="bank-cards">
       <div class="bank-card">
-        <div class="bank-logo bri">BRI</div>
+        <div class="bank-logo">BRI</div>
         <p class="bank-number" id="bri-number">113701001677531</p>
         <p class="bank-name">a.n Alfaber Simangunsong</p>
-        <button class="btn-copy btn-pulse" data-copy="113701001677531">Salin Nomor</button>
+        <button class="btn-line-sm btn-copy" data-copy="113701001677531">Salin Nomor</button>
       </div>
       <div class="bank-card">
-        <div class="bank-logo bca">BCA</div>
+        <div class="bank-logo">BCA</div>
         <p class="bank-number" id="bca-number">6710147793</p>
         <p class="bank-name">a.n Lenny Nova Kurniasari</p>
-        <button class="btn-copy btn-pulse" data-copy="6710147793">Salin Nomor</button>
+        <button class="btn-line-sm btn-copy" data-copy="6710147793">Salin Nomor</button>
       </div>
     </div>
   </section>
@@ -250,30 +194,28 @@
       <label>Ucapan &amp; Doa
         <textarea id="rsvp-ucapan" rows="3" placeholder="Tuliskan ucapan dan doa untuk kedua mempelai"></textarea>
       </label>
-      <button type="submit" class="btn-gold btn-pulse" id="rsvp-submit-btn">Kirim Konfirmasi</button>
+      <button type="submit" class="btn-line btn-breathe" id="rsvp-submit-btn">Kirim Konfirmasi</button>
       <p class="rsvp-status" id="rsvp-status"></p>
     </form>
 
     <div class="rsvp-wa-confirm" id="rsvp-wa-confirm" hidden>
       <p>Konfirmasi juga langsung ke:</p>
       <div class="wa-buttons">
-        <a class="btn-wa btn-pulse" id="wa-alfa" data-source="Alfa" target="_blank" rel="noopener">Konfirmasi ke Alfa</a>
-        <a class="btn-wa btn-pulse" id="wa-lenny" data-source="Lenny" target="_blank" rel="noopener">Konfirmasi ke Lenny</a>
+        <a class="btn-line-sm" id="wa-alfa" data-source="Alfa" target="_blank" rel="noopener">Konfirmasi ke Alfa</a>
+        <a class="btn-line-sm" id="wa-lenny" data-source="Lenny" target="_blank" rel="noopener">Konfirmasi ke Lenny</a>
       </div>
     </div>
 
     <div class="rsvp-summary" id="rsvp-summary">
-      <span class="rsvp-count hadir">Hadir <b id="count-hadir">0</b></span>
-      <span class="rsvp-count tidak">Tidak Hadir <b id="count-tidak">0</b></span>
+      <span class="rsvp-count">Hadir <b id="count-hadir">0</b></span>
+      <span class="rsvp-count">Tidak Hadir <b id="count-tidak">0</b></span>
     </div>
     <ul class="rsvp-list" id="rsvp-list"></ul>
   </section>
 
   <!-- Closing -->
   <section class="page closing-page">
-    <div class="flower-frame-img" aria-hidden="true">
-      <img src="assets/bingkai-bunga.png" alt="" onerror="this.parentElement.style.display='none'">
-    </div>
+    <div class="hr-thin small"></div>
     <h2 class="section-title">Sebuah Ketetapan Ilahi</h2>
     <p class="closing-text">
       Pernikahan bukan sekadar kontrak sosial, melainkan pengikatan jiwa oleh Allah sendiri &mdash;
@@ -286,19 +228,20 @@
       Merupakan suatu kebahagiaan dan kehormatan bagi kami apabila Bapak/Ibu/Saudara/i
       berkenan hadir dan memberikan doa restu.
     </p>
-    <p class="closing-signature">Kami yang berbahagia,<br><span class="names-script small">Alfaber &amp; Lenny</span></p>
+    <p class="closing-signature">Kami yang berbahagia,<br><span class="names-modern small">Alfaber &amp; Lenny</span></p>
   </section>
 
   <!-- Ad footer -->
   <footer class="ad-footer">
     <a href="https://wa.me/6281246211461?text=Halo%20Mangunsong%20Tech.AI%2C%20saya%20tertarik%20membuat%20undangan%20pernikahan%20digital"
-       target="_blank" rel="noopener" class="btn-ad btn-pulse">
-      💌 Ingin undangan digital seperti ini? Order di <strong>MANGUNSONG TECH.AI</strong>
+       target="_blank" rel="noopener" class="btn-ad">
+      Undangan digital ini dibuat oleh <strong>MANGUNSONG TECH.AI</strong> &middot; Ingin yang serupa?
     </a>
   </footer>
 
 </main>
 
 <script src="js/script.js"></script>
+</div>
 </body>
 </html>
